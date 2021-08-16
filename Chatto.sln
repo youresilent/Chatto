@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatto.WEB", "Chatto\Chatto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatto.DAL", "Chatto.DAL\Chatto.DAL.csproj", "{31976963-EE78-47F4-B6F8-7D351B9C300D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatto.BLL", "Chatto.BLL\Chatto.BLL.csproj", "{8073DFD2-F987-412E-9706-1E89FC735CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{31976963-EE78-47F4-B6F8-7D351B9C300D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31976963-EE78-47F4-B6F8-7D351B9C300D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31976963-EE78-47F4-B6F8-7D351B9C300D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8073DFD2-F987-412E-9706-1E89FC735CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8073DFD2-F987-412E-9706-1E89FC735CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8073DFD2-F987-412E-9706-1E89FC735CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8073DFD2-F987-412E-9706-1E89FC735CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
