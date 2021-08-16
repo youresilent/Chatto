@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Chatto.DAL.EF
 {
-	class ApplicationContext : IdentityDbContext<ApplicationUser>
+	public class ApplicationContext : IdentityDbContext<ApplicationUser>
 	{
 		public ApplicationContext(string connectionString) : base(connectionString)
 		{ }
