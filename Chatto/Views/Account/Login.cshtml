@@ -1,0 +1,17 @@
+﻿@model Chatto.Models.LoginModel
+@{
+	ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+	@Html.AntiForgeryToken()
+
+	@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+	@Html.EditorForModel()
+	<input type="submit" class="btn btn-outline-success" value="Войти" />
+}
+
