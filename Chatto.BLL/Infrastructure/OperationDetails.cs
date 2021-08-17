@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chatto.BLL.Infrastructure
 {
-	class OperationDetails
+	public class OperationDetails
 	{
 		public bool Succeeded { get; private set; }
 		public string Message { get; private set; }
