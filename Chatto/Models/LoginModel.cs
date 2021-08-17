@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Chatto.Models
 {
-	public class LoginModel
+	public class LogInModel
 	{
 		[Required]
 		[Display(Name = "Имя пользователя")]

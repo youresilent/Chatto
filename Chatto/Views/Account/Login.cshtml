@@ -1,11 +1,11 @@
-﻿@model Chatto.Models.LoginModel
+﻿@model Chatto.Models.LogInModel
 @{
 	ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+@using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
 {
 	@Html.AntiForgeryToken()
 

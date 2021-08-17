@@ -1,4 +1,5 @@
 ﻿using Chatto.BLL.DTO;
+using Chatto.BLL.Infrastructure;
 using Chatto.BLL.Interfaces;
 using Chatto.Models;
 using Microsoft.AspNet.Identity.Owin;
@@ -41,6 +42,36 @@ namespace Chatto.Controllers
             return View();
 		}
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register (RegisterModel registerModel)
+		{
+            await SetInitialDataAsync();
+            if (ModelState.IsValid)
+			{
+                UserDTO userDTO = new UserDTO
+                {
+                    UserName = registerModel.UserName,
+                    Password = registerModel.Password,
+                    RealName = registerModel.RealName,
+                    Email = registerModel.Email,
+                    Address = registerModel.Address,
+                    Gender = registerModel.Gender,
+                    Age = registerModel.Age,
+                    Role = "user"
+                };
+
+                OperationDetails operation = await UserService.Create(userDTO);
+
+                if (operation.Succeeded)
+                    return RedirectToAction("LogIn");
+                else
+                    ModelState.AddModelError(operation.Property, operation.Message);
+			}
+
+            return View(registerModel);
+		}
+
 		#endregion
 
 		#region login/logout
@@ -50,14 +81,14 @@ namespace Chatto.Controllers
             return RedirectToAction("Index", "Home");
 		}
 
-        public ViewResult Login()
+        public ViewResult LogIn()
 		{
             return View();
 		}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginModel loginModel)
+        public async Task<ActionResult> LogIn(LogInModel loginModel)
         {
             if (ModelState.IsValid)
 			{
@@ -89,20 +120,20 @@ namespace Chatto.Controllers
 
 		#endregion
 
-		//private async Task SetInitialDataAsync()
-		//{
-  //          await UserService.SetInitialData(new BLL.DTO.UserDTO
-  //          {
-  //              Address = "ADMINADDRESS",
-  //              Age = 10,
-  //              UserName = "adminadmin",
-  //              Email = "ADMINEMAIL",
-  //              RealName = "ADMINREALNAME",
-  //              Gender = "ADMINGENDER",
-  //              Password = "123123",
-  //              Role = "admin"
-  //          }, new List<string> { "user", "admin" });
-		//}
+		private async Task SetInitialDataAsync()
+		{
+			await UserService.SetInitialData(new BLL.DTO.UserDTO
+			{
+				Address = "ADMINADDRESS",
+				Age = 10,
+				UserName = "adminadmin",
+				Email = "ADMINEMAIL",
+				RealName = "ADMINREALNAME",
+				Gender = "ADMINGENDER",
+				Password = "123123",
+				Role = "admin"
+			}, new List<string> { "user", "admin" });
+		}
 
 		public ActionResult Index()
         {

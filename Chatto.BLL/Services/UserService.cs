@@ -45,7 +45,7 @@ namespace Chatto.BLL.Services
 
 				await DataBase.UserManager.AddToRoleAsync(user.Id, userDTO.Role);
 
-				ClientProfile clientProfile = new ClientProfile { Address = userDTO.Address, Age = userDTO.Age, Gender = userDTO.Gender, Id = userDTO.Id, RealName = userDTO.RealName };
+				ClientProfile clientProfile = new ClientProfile { Address = userDTO.Address, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName };
 				DataBase.ClientManager.Create(clientProfile);
 
 				await DataBase.SaveAsync();
