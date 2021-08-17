@@ -4,11 +4,9 @@ using Chatto.BLL.Interfaces;
 using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
 using Microsoft.AspNet.Identity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Chatto.BLL.Services
@@ -17,7 +15,7 @@ namespace Chatto.BLL.Services
 	{
 		IUnitOfWork DataBase { get; set; }
 
-		public UserService (IUnitOfWork uow)
+		public UserService(IUnitOfWork uow)
 		{
 			DataBase = uow;
 		}
@@ -36,7 +34,7 @@ namespace Chatto.BLL.Services
 		public async Task<OperationDetails> Create(UserDTO userDTO)
 		{
 			ApplicationUser user = await DataBase.UserManager.FindByEmailAsync(userDTO.Email);
-			
+
 			if (user == null)
 			{
 				user = new ApplicationUser { Email = userDTO.Email, UserName = userDTO.UserName };

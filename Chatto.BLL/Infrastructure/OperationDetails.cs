@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chatto.BLL.Infrastructure
+﻿namespace Chatto.BLL.Infrastructure
 {
 	public class OperationDetails
 	{
@@ -12,7 +6,7 @@ namespace Chatto.BLL.Infrastructure
 		public string Message { get; private set; }
 		public string Property { get; private set; }
 
-		public OperationDetails (bool succeeded, string message, string property)
+		public OperationDetails(bool succeeded, string message, string property)
 		{
 			Succeeded = succeeded;
 			Message = message;
