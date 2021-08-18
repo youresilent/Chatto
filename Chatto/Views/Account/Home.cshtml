@@ -1,0 +1,47 @@
+﻿@model Chatto.BLL.DTO.UserDTO
+@{
+    ViewBag.Title = "Мой профиль";
+}
+
+<h2 class="display-2">Мой профиль - @User.Identity.Name</h2>
+
+<div class="row">
+	<div class="col-md-4">
+		<h3 class="display-6">Обо мне</h3>
+		<p>
+			<table class="table table-borderless">
+				<tr>
+					<td><em>@Html.LabelFor(m => m.UserName)</em></td>
+					<td>@Html.DisplayFor(m => m.UserName)</td>
+				</tr>
+				<tr>
+					<td><em>@Html.LabelFor(m => m.Email)</em></td>
+					<td>@Html.DisplayFor(m => m.Email)</td>
+				</tr>
+				<tr>
+					<td><em>@Html.LabelFor(m => m.Gender)</em></td>
+					<td>@Html.DisplayFor(m => m.Gender)</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</p>
+		<a href="/Account/Info" class="btn btn-outline-info btn-sm">Больше информации</a>
+	</div>
+
+	<div class="col-md-4">
+		<h3 class="display-6">Мои друзья</h3>
+		<p>
+			нет друзей....
+		</p>
+	</div>
+
+	<div class="col-md-4">
+		<h3 class="display-6">Параметры</h3>
+		<p>
+			кнопочки
+		</p>
+	</div>
+</div>
