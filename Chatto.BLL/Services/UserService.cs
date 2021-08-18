@@ -58,6 +58,23 @@ namespace Chatto.BLL.Services
 			}
 		}
 
+		public UserDTO GetUserData(string userName)
+		{
+			ApplicationUser tempUser = DataBase.UserManager.FindByName(userName);
+
+			UserDTO user = new UserDTO
+			{
+				UserName = tempUser.UserName,
+				Email = tempUser.Email,
+				Address = tempUser.ClientProfile.Address,
+				Gender = tempUser.ClientProfile.Gender,
+				Age = tempUser.ClientProfile.Age,
+				RealName = tempUser.ClientProfile.RealName,
+			};
+
+			return user;
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
