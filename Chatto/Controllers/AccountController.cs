@@ -55,7 +55,7 @@ namespace Chatto.Controllers
                     Password = registerModel.Password,
                     RealName = registerModel.RealName,
                     Email = registerModel.Email,
-                    Address = registerModel.Address,
+                    Adress = registerModel.Adress,
                     Gender = registerModel.Gender,
                     Age = registerModel.Age,
                     Role = "user"
@@ -129,13 +129,21 @@ namespace Chatto.Controllers
             return View(user);
 		}
 
+        [Authorize]
+        [Route("Account/ProfileInfo/{userName}")]
+        public ViewResult ProfileInfo(string userName)
+		{
+            UserDTO user = UserService.GetUserData(userName);
+            return View(user);
+		}
+
 		#endregion
 
 		//private async Task SetInitialDataAsync()
 		//{
 		//	await UserService.SetInitialData(new BLL.DTO.UserDTO
 		//	{
-		//		Address = "ADMINADDRESS",
+		//		Adress = "ADMINADRESS",
 		//		Age = 10,
 		//		UserName = "adminadmin",
 		//		Email = "ADMINEMAIL",

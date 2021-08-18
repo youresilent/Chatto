@@ -17,7 +17,7 @@ namespace Chatto.BLL.DTO
 		public string Email { get; set; }
 		
 		[Display(Name = "Адрес")]
-		public string Address { get; set; }
+		public string Adress { get; set; }
 
 		[Display(Name = "Пол")] 
 		public string Gender { get; set; }

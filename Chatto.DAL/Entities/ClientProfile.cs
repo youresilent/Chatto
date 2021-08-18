@@ -10,7 +10,7 @@ namespace Chatto.DAL.Entities
 		public string Id { get; set; }
 
 		public string RealName { get; set; }
-		public string Address { get; set; }
+		public string Adress { get; set; }
 		public string Gender { get; set; }
 		public int Age { get; set; }
 

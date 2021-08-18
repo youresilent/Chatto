@@ -1,13 +1,13 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
-    ViewBag.Title = "Мой профиль";
+    ViewBag.Title = "My profile";
 }
 
-<h2 class="display-2">Мой профиль - @User.Identity.Name</h2>
+<h2 class="display-2">My profile - @User.Identity.Name</h2>
 
 <div class="row">
 	<div class="col-md-4">
-		<h3 class="display-6">Обо мне</h3>
+		<h3 class="display-6">My info</h3>
 		<p>
 			<table class="table table-borderless">
 				<tr>
@@ -28,18 +28,19 @@
 				</tr>
 			</table>
 		</p>
-		<a href="/Account/Info" class="btn btn-outline-info btn-sm">Больше информации</a>
+		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName })
+		<a href="/Account/ProfileInfo/@User.Identity.Name" class="btn btn-outline-info btn-sm">More info</a>
 	</div>
 
 	<div class="col-md-4">
-		<h3 class="display-6">Мои друзья</h3>
+		<h3 class="display-6">My friends</h3>
 		<p>
 			нет друзей....
 		</p>
 	</div>
 
 	<div class="col-md-4">
-		<h3 class="display-6">Параметры</h3>
+		<h3 class="display-6">Settings</h3>
 		<p>
 			кнопочки
 		</p>

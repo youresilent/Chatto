@@ -1,8 +1,15 @@
 ﻿@{
-    ViewBag.Title = "Начало";
+    ViewBag.Title = "Index";
 }
 
 <div class="jumbotron">
-    <h1 class="text-center">Chatto</h1>
-    <p class="lead text-center">Просто невероятная социальная сеть на никем не используемой технологии, хз чё ещё написать сюда</p>
+	<h1 class="display-1 text-center">Chatto</h1>
+	@if (Request.IsAuthenticated)
+	{
+		<p class="lead text-center">You are already logged in, click "My profile" to use Chatto!</p>
+	}
+	else
+	{
+		<p class="lead text-center">To proceed, Register new account or Log In</p>
+	}
 </div>

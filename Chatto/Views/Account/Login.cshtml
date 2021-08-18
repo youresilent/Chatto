@@ -1,15 +1,15 @@
 ﻿@model Chatto.Models.LogInModel
 @{
-	ViewBag.Title = "Вход в учётную запись";
+	ViewBag.Title = "Sign in";
 }
 
-<h2 class="display-2">Вход в учётную запись</h2>
+<h2 class="display-2">Sign in</h2>
 
 @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
 {
 	@Html.AntiForgeryToken()
 
-	<h6 class="display-6">Введите данные</h6>
+	<h6 class="display-6">Enter credentials</h6>
 
 	@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -30,10 +30,10 @@
 		</div>
 
 				<div>
-			<small>Ещё не зарегистрированы? <a href="/Account/Register">Зарегистрироваться</a></small>
+			<small>Not registered? <a href="/Account/Register">Create an account</a></small>
 		</div>
 	</div>
 
-	<input type="submit" class="btn btn-outline-success" value="Войти" />
+	<input type="submit" class="btn btn-outline-success" value="Sign in" />
 }
 

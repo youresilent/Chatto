@@ -9,11 +9,11 @@ namespace Chatto.Models
 	public class LogInModel
 	{
 		[Required]
-		[Display(Name = "Имя пользователя")]
+		[Display(Name = "Login")]
 		public string UserName { get; set; }
 
 		[Required]
-		[Display(Name = "Пароль")]
+		[Display(Name = "Password")]
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
 	}

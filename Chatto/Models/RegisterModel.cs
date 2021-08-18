@@ -9,38 +9,38 @@ namespace Chatto.Models
 	public class RegisterModel
 	{
 		[Required]
-		[Display(Name = "Имя пользователя")]
+		[Display(Name = "Login")]
 		public string UserName { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
-		[Display(Name = "Пароль")]
+		[Display(Name = "Password")]
 		public string Password { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
-		[Compare("Password", ErrorMessage = "Пароли не совпадают!")]
-		[Display(Name = "Подтвердите пароль")]
+		[Compare("Password", ErrorMessage = "Passwords do not match!")]
+		[Display(Name = "Confirm password")]
 		public string ConfirmPassword { get; set; }
 
 		[Required]
-		[Display(Name = "Настоящее имя")]
+		[Display(Name = "First name")]
 		public string RealName { get; set; }
 
 		[Required]
-		[Display(Name = "Электронная почта")]
+		[Display(Name = "E-mail address")]
 		public string Email { get; set; }
 
 		[Required]
-		[Display(Name = "Адрес")]
-		public string Address { get; set; }
+		[Display(Name = "Adress")]
+		public string Adress { get; set; }
 
 		[Required]
-		[Display(Name = "Пол")]
+		[Display(Name = "Gender")]
 		public string Gender { get; set; }
 
 		[Required]
-		[Display(Name = "Возраст")]
+		[Display(Name = "Age")]
 		public int Age { get; set; }
 	}
 }
