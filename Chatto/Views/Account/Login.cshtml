@@ -1,17 +1,39 @@
 ﻿@model Chatto.Models.LogInModel
 @{
-	ViewBag.Title = "Login";
+	ViewBag.Title = "Вход в учётную запись";
 }
 
-<h2>Login</h2>
+<h2 class="display-2">Вход в учётную запись</h2>
 
 @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
 {
 	@Html.AntiForgeryToken()
 
+	<h6 class="display-6">Введите данные</h6>
+
 	@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-	@Html.EditorForModel()
+	<div class="mb-4">
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+			<div class="col-md-5">
+				@Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+			<div class="col-md-5">
+				@Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password"})
+			</div>
+		</div>
+
+				<div>
+			<small>Ещё не зарегистрированы? <a href="/Account/Register">Зарегистрироваться</a></small>
+		</div>
+	</div>
+
 	<input type="submit" class="btn btn-outline-success" value="Войти" />
 }
 
