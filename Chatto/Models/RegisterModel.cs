@@ -8,39 +8,40 @@ namespace Chatto.Models
 {
 	public class RegisterModel
 	{
-		[Required]
+		[Required(ErrorMessage = "User name is required!")]
 		[Display(Name = "Login")]
 		public string UserName { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Password is required!")]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Confirming password is required!")]
 		[DataType(DataType.Password)]
 		[Compare("Password", ErrorMessage = "Passwords do not match!")]
 		[Display(Name = "Confirm password")]
 		public string ConfirmPassword { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "First name is required!")]
 		[Display(Name = "First name")]
 		public string RealName { get; set; }
 
-		[Required]
-		[Display(Name = "E-mail address")]
+		[Required(ErrorMessage = "E-mail adress is required!")]
+		[Display(Name = "E-mail adress")]
 		public string Email { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Adress is required!")]
 		[Display(Name = "Adress")]
 		public string Adress { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Gender is required!")]
 		[Display(Name = "Gender")]
 		public string Gender { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Age is required!")]
 		[Display(Name = "Age")]
+		[Range(1, 120, ErrorMessage = "Wrong age input!")]
 		public int Age { get; set; }
 	}
 }
