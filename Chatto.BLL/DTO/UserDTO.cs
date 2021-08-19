@@ -6,23 +6,23 @@ namespace Chatto.BLL.DTO
 	{
 		public string Id { get; set; }
 		
-		[Display(Name = "Имя пользователя")]
+		[Display(Name = "User name")]
 		public string UserName { get; set; }
 		public string Password { get; set; }
 
-		[Display(Name = "Настоящее имя")]
+		[Display(Name = "Real name")]
 		public string RealName { get; set; }
 		
-		[Display(Name = "Электронная почта")]
+		[Display(Name = "E-mail adress")]
 		public string Email { get; set; }
 		
-		[Display(Name = "Адрес")]
+		[Display(Name = "Adress")]
 		public string Adress { get; set; }
 
-		[Display(Name = "Пол")] 
+		[Display(Name = "Gender")] 
 		public string Gender { get; set; }
 
-		[Display(Name = "Возраст")]
+		[Display(Name = "Age")]
 		public int Age { get; set; }
 
 		public string Role { get; set; }
