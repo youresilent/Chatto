@@ -1,0 +1,20 @@
+﻿@if (Request.IsAuthenticated)
+{
+	using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="btn-group-sm">
+			@Html.ActionLink("My profile", "Home", "Account", routeValues: null, htmlAttributes : new { id = "profileLink", @class = "btn btn-sm btn-outline-primary" })
+			<a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-outline-danger">Log Out</a>
+		</div>
+	}
+}
+else
+{
+	<div class="btn-group-sm">
+			@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-sm btn-outline-primary" })
+			@Html.ActionLink("Sign in", "LogIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-sm btn-outline-secondary" })
+		</div>
+}
+

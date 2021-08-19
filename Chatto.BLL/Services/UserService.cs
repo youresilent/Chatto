@@ -45,7 +45,7 @@ namespace Chatto.BLL.Services
 
 				await DataBase.UserManager.AddToRoleAsync(user.Id, userDTO.Role);
 
-				ClientProfile clientProfile = new ClientProfile { Address = userDTO.Address, Age = userDTO.Age, Gender = userDTO.Gender, Id = userDTO.Id, RealName = userDTO.RealName };
+				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName };
 				DataBase.ClientManager.Create(clientProfile);
 
 				await DataBase.SaveAsync();
@@ -54,8 +54,26 @@ namespace Chatto.BLL.Services
 			}
 			else
 			{
-				return new OperationDetails(false, "Пользователь с таким тиенем пользователя уже существует!", "UserName");
+				return new OperationDetails(false, "Пользователь с таким именем пользователя уже существует!", "UserName");
 			}
+		}
+
+		public UserDTO GetUserData(string userName)
+		{
+			ApplicationUser tempUser = DataBase.UserManager.FindByName(userName);
+
+			UserDTO user = new UserDTO
+			{
+				Id = tempUser.Id,
+				UserName = tempUser.UserName,
+				Email = tempUser.Email,
+				Adress = tempUser.ClientProfile.Adress,
+				Gender = tempUser.ClientProfile.Gender,
+				Age = tempUser.ClientProfile.Age,
+				RealName = tempUser.ClientProfile.RealName,
+			};
+
+			return user;
 		}
 
 		public void Dispose()
