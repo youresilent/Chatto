@@ -89,6 +89,19 @@ namespace Chatto.BLL.Services
 			DataBase.UserManager.Update(currentUser);
 		}
 
+		public OperationDetails ChangePassword(string oldPass, string newPass, string id)
+		{
+			ApplicationUser user = DataBase.UserManager.FindById(id);
+
+			if (DataBase.UserManager.CheckPassword(user, oldPass))
+			{
+				DataBase.UserManager.ChangePassword(id, oldPass, newPass);
+				return new OperationDetails(true, "Changed pass successfully!", "");
+			}
+			else
+				return new OperationDetails(false, "Incorrect old password", oldPass);
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
