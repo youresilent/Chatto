@@ -15,5 +15,7 @@ namespace Chatto.BLL.Interfaces
 		Task SetInitialData(UserDTO adminDTO, List<string> roles);
 
 		UserDTO GetUserData(string userName);
+
+		Task ChangeSecondaryInfo(UserDTO newUserInfo);
 	}
 }

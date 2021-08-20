@@ -125,7 +125,7 @@ namespace Chatto.Controllers
         [Authorize]
         public ViewResult Home()
 		{
-            UserDTO user = UserService.GetUserData(User.Identity.Name);
+            UserDTO user = GetUserData(User.Identity.Name);
             return View(user);
 		}
 
@@ -133,8 +133,23 @@ namespace Chatto.Controllers
         [Route("Account/ProfileInfo/{userName}")]
         public ViewResult ProfileInfo(string userName)
 		{
-            UserDTO user = UserService.GetUserData(userName);
+            UserDTO user = GetUserData(userName);
             return View(user);
+		}
+
+        [Authorize]
+        public ViewResult ProfileEdit()
+		{
+            UserDTO user = GetUserData(User.Identity.Name);
+            return View(user);
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProfileEdit(UserDTO newUser)
+		{
+            UserService.ChangeSecondaryInfo(newUser);
+            return RedirectToAction("Home");
 		}
 
 		#endregion
@@ -158,5 +173,10 @@ namespace Chatto.Controllers
         {
             return View();
         }
+
+        private UserDTO GetUserData(string userName)
+		{
+            return UserService.GetUserData(userName);
+		}
     }
 }

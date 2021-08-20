@@ -76,6 +76,19 @@ namespace Chatto.BLL.Services
 			return user;
 		}
 
+		public async Task ChangeSecondaryInfo(UserDTO newUserInfo)
+		{
+			ApplicationUser currentUser = DataBase.UserManager.FindByName(newUserInfo.UserName);
+			
+			currentUser.ClientProfile.Adress = newUserInfo.Adress;
+			currentUser.ClientProfile.Age = newUserInfo.Age;
+			currentUser.Email = newUserInfo.Email;
+			currentUser.ClientProfile.Gender = newUserInfo.Gender;
+			currentUser.ClientProfile.RealName = newUserInfo.RealName;
+
+			DataBase.UserManager.Update(currentUser);
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
