@@ -147,9 +147,57 @@ namespace Chatto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ProfileEdit(UserDTO newUser)
+        {
+            if (string.IsNullOrWhiteSpace(newUser.Adress))
+                ModelState.AddModelError("Adress", "Adress is required!");
+
+            if (string.IsNullOrWhiteSpace(newUser.Email))
+                ModelState.AddModelError("Email", "E-mail adress is required!");
+
+            if (string.IsNullOrWhiteSpace(newUser.RealName))
+                ModelState.AddModelError("RealName", "Real name is required!");
+
+            if (string.IsNullOrWhiteSpace(newUser.Gender))
+                ModelState.AddModelError("Gender", "Gender is required!");
+
+            if (newUser.Age < 5 || newUser.Age > 120)
+                ModelState.AddModelError("Age", "Age input is not correct! It must be between 5 and 120.");
+
+            if (ModelState.IsValid)
+			{
+                UserService.ChangeSecondaryInfo(newUser);
+                return RedirectToAction("Home");
+            }
+            else
+			{
+                return View(newUser);
+            }
+        }
+
+        [Authorize]
+        public ViewResult ChangePassword()
 		{
-            UserService.ChangeSecondaryInfo(newUser);
-            return RedirectToAction("Home");
+            return View();
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+		{
+            if (ModelState.IsValid)
+			{
+                UserDTO user = GetUserData(User.Identity.Name);
+                OperationDetails operation = UserService.ChangePassword(model.OldPassword, model.NewPassword, user.Id);
+
+                if (operation.Succeeded)
+                    return RedirectToAction("Home");
+                else
+			    {
+                    ModelState.AddModelError(operation.Property, operation.Message);
+			    }
+			}
+
+            return View(model);
 		}
 
 		#endregion

@@ -50,11 +50,11 @@ namespace Chatto.BLL.Services
 
 				await DataBase.SaveAsync();
 
-				return new OperationDetails(true, "Регистрация прошла успешно!", "");
+				return new OperationDetails(true, "Successful registration!", "");
 			}
 			else
 			{
-				return new OperationDetails(false, "Пользователь с таким именем пользователя уже существует!", "UserName");
+				return new OperationDetails(false, "This User name already exists!", "UserName");
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace Chatto.BLL.Services
 			return user;
 		}
 
-		public async Task ChangeSecondaryInfo(UserDTO newUserInfo)
+		public OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo)
 		{
 			ApplicationUser currentUser = DataBase.UserManager.FindByName(newUserInfo.UserName);
 			
@@ -86,7 +86,25 @@ namespace Chatto.BLL.Services
 			currentUser.ClientProfile.Gender = newUserInfo.Gender;
 			currentUser.ClientProfile.RealName = newUserInfo.RealName;
 
-			DataBase.UserManager.Update(currentUser);
+			var operation = DataBase.UserManager.Update(currentUser);
+
+			if (operation.Succeeded)
+				return new OperationDetails(true, "Updated successfully!", "");
+			else
+				return new OperationDetails(false, "Update failed!", "");
+		}
+
+		public OperationDetails ChangePassword(string oldPass, string newPass, string id)
+		{
+			ApplicationUser user = DataBase.UserManager.FindById(id);
+
+			if (DataBase.UserManager.CheckPassword(user, oldPass))
+			{
+				DataBase.UserManager.ChangePassword(id, oldPass, newPass);
+				return new OperationDetails(true, "Changed pass successfully!", "");
+			}
+			else
+				return new OperationDetails(false, "Incorrect old password", oldPass);
 		}
 
 		public void Dispose()
