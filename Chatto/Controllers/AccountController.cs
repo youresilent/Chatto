@@ -147,9 +147,38 @@ namespace Chatto.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ProfileEdit(UserDTO newUser)
+        {
+            if (ModelState.IsValid)
+			{
+                UserService.ChangeSecondaryInfo(newUser);
+                return RedirectToAction("Home");
+            }
+            else
+			{
+                return View(newUser);
+            }
+        }
+
+        [Authorize]
+        public ViewResult ChangePassword()
 		{
-            UserService.ChangeSecondaryInfo(newUser);
-            return RedirectToAction("Home");
+            return View();
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+		{
+            UserDTO user = GetUserData(User.Identity.Name);
+            OperationDetails operation = UserService.ChangePassword(model.OldPassword, model.NewPassword, user.Id);
+
+            if (operation.Succeeded)
+                return RedirectToAction("Home");
+            else
+			{
+                ModelState.AddModelError(operation.Property, operation.Message);
+                return View(model);
+			}
 		}
 
 		#endregion
