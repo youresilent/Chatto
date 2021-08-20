@@ -40,8 +40,9 @@
 
 	<div class="col-md-4">
 		<h3 class="display-6">Settings</h3>
-		<p>
-			кнопочки
-		</p>
+		<div class="btn-group-sm">
+			@Html.ActionLink("Edit info", "ProfileEdit", "Account", new { @class = "btn btn-sm btn-outline-info" }) 
+			@Html.ActionLink("Change password", "ChangePassword", "Account", new { @class = "btn btn-sm btn-outline-info" })
+		</div>
 	</div>
 </div>
