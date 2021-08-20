@@ -76,7 +76,7 @@ namespace Chatto.BLL.Services
 			return user;
 		}
 
-		public async Task ChangeSecondaryInfo(UserDTO newUserInfo)
+		public void ChangeSecondaryInfo(UserDTO newUserInfo)
 		{
 			ApplicationUser currentUser = DataBase.UserManager.FindByName(newUserInfo.UserName);
 			
