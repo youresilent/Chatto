@@ -16,7 +16,7 @@ namespace Chatto.BLL.Interfaces
 
 		UserDTO GetUserData(string userName);
 
-		void ChangeSecondaryInfo(UserDTO newUserInfo);
+		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
 
 		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
 	}
