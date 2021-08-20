@@ -28,8 +28,7 @@
 				</tr>
 			</table>
 		</p>
-		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName })
-		<a href="/Account/ProfileInfo/@User.Identity.Name" class="btn btn-outline-info btn-sm">More info</a>
+		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName }, new { @class = "btn btn-sm btn-outline-info" })
 	</div>
 
 	<div class="col-md-4">

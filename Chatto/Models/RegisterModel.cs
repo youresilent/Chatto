@@ -41,7 +41,7 @@ namespace Chatto.Models
 
 		[Required(ErrorMessage = "Age is required!")]
 		[Display(Name = "Age")]
-		[Range(1, 120, ErrorMessage = "Wrong age input!")]
+		[Range(5, 120, ErrorMessage = "Age input is not correct! It must be between 5 and 120.")]
 		public int Age { get; set; }
 	}
 }
