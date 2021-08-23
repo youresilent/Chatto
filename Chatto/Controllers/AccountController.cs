@@ -129,7 +129,11 @@ namespace Chatto.Controllers
             return View(user);
 		}
 
-        [Authorize]
+		#endregion
+
+		#region profile-methods
+
+		[Authorize]
         [Route("Account/ProfileInfo/{userName}")]
         public ViewResult ProfileInfo(string userName)
 		{
@@ -180,6 +184,7 @@ namespace Chatto.Controllers
             return View();
 		}
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
@@ -192,32 +197,55 @@ namespace Chatto.Controllers
                 if (operation.Succeeded)
                     return RedirectToAction("Home");
                 else
-			    {
                     ModelState.AddModelError(operation.Property, operation.Message);
-			    }
 			}
 
             return View(model);
 		}
 
-		#endregion
+        [Authorize]
+        public ViewResult PeopleList()
+		{
+            ViewBag.Users = UserService.GetAllUsers();
+            return View(GetUserData(User.Identity.Name));
+		}
 
-		//private async Task SetInitialDataAsync()
-		//{
-		//	await UserService.SetInitialData(new BLL.DTO.UserDTO
-		//	{
-		//		Adress = "ADMINADRESS",
-		//		Age = 10,
-		//		UserName = "adminadmin",
-		//		Email = "ADMINEMAIL",
-		//		RealName = "ADMINREALNAME",
-		//		Gender = "ADMINGENDER",
-		//		Password = "123123",
-		//		Role = "admin"
-		//	}, new List<string> { "user", "admin" });
-		//}
+        [Authorize]
+        public ViewResult FriendsList()
+		{
 
-		public ActionResult Index()
+            return View();
+		}
+
+        [Authorize]
+        public ActionResult AddFriend(string userName)
+		{
+            OperationDetails operation = UserService.AddFriend(User.Identity.Name, userName);
+
+            if (operation.Succeeded)
+                return RedirectToAction("Home");
+            else
+                return Redirect("/Shared/Error.cshtml");
+		}
+
+        #endregion
+
+        //private async Task SetInitialDataAsync()
+        //{
+        //	await UserService.SetInitialData(new BLL.DTO.UserDTO
+        //	{
+        //		Adress = "ADMINADRESS",
+        //		Age = 10,
+        //		UserName = "adminadmin",
+        //		Email = "ADMINEMAIL",
+        //		RealName = "ADMINREALNAME",
+        //		Gender = "ADMINGENDER",
+        //		Password = "123123",
+        //		Role = "admin"
+        //	}, new List<string> { "user", "admin" });
+        //}
+
+        public ActionResult Index()
         {
             return View();
         }

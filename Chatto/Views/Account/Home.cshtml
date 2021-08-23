@@ -30,8 +30,38 @@
 	<div class="col-md-4 mb-5">
 		<h3 class="display-6">My friends</h3>
 		<p>
-			нет друзей....
+			<table class="table table-borderless table-hover">
+				<tr>
+					<td><em>Name1</em></td>
+					<td style="text-align: right">
+						@Html.ActionLink("Chat", "ChatPage", "Account", new { @class = "btn btn-sm btn-outline-primary" })
+						@Html.ActionLink("Remove", "RemoveFriend", "Account", new { @class = "btn btn-sm btn-outline-danger" })
+					</td>
+				</tr>
+				<tr>
+					<td><em>Name2</em></td>
+					<td style="text-align: right">
+						@Html.ActionLink("Chat", "ChatPage", "Account", new { @class = "btn btn-sm btn-outline-primary" })
+						@Html.ActionLink("Remove", "RemoveFriend", "Account", new { @class = "btn btn-sm btn-outline-danger" })
+					</td>
+				</tr>
+				<tr>
+					<td><em>Name3</em></td>
+					<td style="text-align: right">
+						@Html.ActionLink("Chat", "ChatPage", "Account", new { @class = "btn btn-sm btn-outline-primary" })
+						@Html.ActionLink("Remove", "RemoveFriend", "Account", new { @class = "btn btn-sm btn-outline-danger" })
+					</td>
+				</tr>
+			</table>
 		</p>
+		<div class="row">
+			<div class="col">
+				@Html.ActionLink("Add friend", "PeopleList", "Account", new { @class = "btn btn-sm btn-outline-warning container-fluid" })
+			</div>
+			<div class="col">
+				@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid" })
+			</div>
+		</div>
 	</div>
 
 	<div class="col-md-4 mb-5">
