@@ -16,8 +16,9 @@ namespace Chatto.Controllers
 {
     public class AccountController : Controller
     {
-		#region init
-		private IUserService UserService
+        #region init
+
+        private IUserService UserService
 		{
 			get
 			{
@@ -213,6 +214,14 @@ namespace Chatto.Controllers
         [Authorize]
         public ViewResult FriendsList()
 		{
+            var user = GetUserData(User.Identity.Name);
+            var friends = StringToList(user.Friends);
+            List<UserDTO> friendsDTOs = new List<UserDTO>();
+
+            foreach (var friend in friends)
+                friendsDTOs.Add(GetUserData(friend));
+
+            ViewBag.Friends = friendsDTOs;
 
             return View();
 		}
@@ -254,5 +263,14 @@ namespace Chatto.Controllers
 		{
             return UserService.GetUserData(userName);
 		}
+
+        private List<string> StringToList(string str)
+        {
+            List<string> outList = str.Split(',').ToList();
+
+            outList.RemoveAt(outList.Count - 1);
+
+            return outList;
+        }
     }
 }
