@@ -45,7 +45,7 @@ namespace Chatto.BLL.Services
 
 				await DataBase.UserManager.AddToRoleAsync(user.Id, userDTO.Role);
 
-				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName };
+				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName, Friends = "" };
 				DataBase.ClientManager.Create(clientProfile);
 
 				await DataBase.SaveAsync();
@@ -53,9 +53,27 @@ namespace Chatto.BLL.Services
 				return new OperationDetails(true, "Successful registration!", "");
 			}
 			else
-			{
 				return new OperationDetails(false, "This User name already exists!", "UserName");
-			}
+		}
+
+		public OperationDetails AddFriend(string currentUser, string friendUserName)
+		{
+			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
+			ApplicationUser friend = DataBase.UserManager.FindByName(friendUserName);
+
+			user.ClientProfile.Friends += friendUserName + ",";
+			friend.ClientProfile.Friends += currentUser + ",";
+
+			var operation1 = DataBase.UserManager.Update(user);
+			var operation2 = DataBase.UserManager.Update(friend);
+
+			if (!operation1.Succeeded)
+				return new OperationDetails(false, "Error occured while adding friend! (operation1)", currentUser);
+
+			if (!operation2.Succeeded)
+				return new OperationDetails(false, "Error occured while adding friend! (operation2)", friendUserName);
+
+			return new OperationDetails(true, "Added friend successfully!", "");
 		}
 
 		public UserDTO GetUserData(string userName)
@@ -71,9 +89,23 @@ namespace Chatto.BLL.Services
 				Gender = tempUser.ClientProfile.Gender,
 				Age = tempUser.ClientProfile.Age,
 				RealName = tempUser.ClientProfile.RealName,
+				Friends = tempUser.ClientProfile.Friends
 			};
 
 			return user;
+		}
+
+		public List<UserDTO> GetAllUsers()
+		{
+			List<UserDTO> list = new List<UserDTO>();
+			var users = DataBase.UserManager.Users.ToList();
+
+			foreach (var item in users)
+			{
+				list.Add(GetUserData(item.UserName));
+			}
+
+			return list;
 		}
 
 		public OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo)

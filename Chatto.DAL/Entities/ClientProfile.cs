@@ -14,6 +14,8 @@ namespace Chatto.DAL.Entities
 		public string Gender { get; set; }
 		public int Age { get; set; }
 
+		public string Friends { get; set; }
+
 		public virtual ApplicationUser ApplicationUser { get; set; }
 	}
 }

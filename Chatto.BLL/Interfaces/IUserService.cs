@@ -16,6 +16,10 @@ namespace Chatto.BLL.Interfaces
 
 		UserDTO GetUserData(string userName);
 
+		List<UserDTO> GetAllUsers();
+
+		OperationDetails AddFriend(string currentUser, string friendUserName);
+
 		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
 
 		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
