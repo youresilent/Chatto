@@ -127,6 +127,8 @@ namespace Chatto.Controllers
         public ViewResult Home()
 		{
             UserDTO user = GetUserData(User.Identity.Name);
+            ViewBag.Friends = GetUserFriends();
+
             return View(user);
 		}
 
@@ -214,14 +216,7 @@ namespace Chatto.Controllers
         [Authorize]
         public ViewResult FriendsList()
 		{
-            var user = GetUserData(User.Identity.Name);
-            var friends = StringToList(user.Friends);
-            List<UserDTO> friendsDTOs = new List<UserDTO>();
-
-            foreach (var friend in friends)
-                friendsDTOs.Add(GetUserData(friend));
-
-            ViewBag.Friends = friendsDTOs;
+            ViewBag.Friends = GetUserFriends();
 
             return View();
 		}
@@ -263,6 +258,18 @@ namespace Chatto.Controllers
 		{
             return UserService.GetUserData(userName);
 		}
+
+        private List<UserDTO> GetUserFriends()
+		{
+            var user = GetUserData(User.Identity.Name);
+            var friends = StringToList(user.Friends);
+            List<UserDTO> friendsDTOs = new List<UserDTO>();
+
+            foreach (var friend in friends)
+                friendsDTOs.Add(GetUserData(friend));
+
+            return friendsDTOs;
+        }
 
         private List<string> StringToList(string str)
         {
