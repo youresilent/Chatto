@@ -1,8 +1,28 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
-    ViewBag.Title = "ProfileInfo";
+    ViewBag.Title = "More info";
 }
 
-<h2>ProfileInfo</h2>
+<h2 class="display-2">More info - @Model.UserName</h2>
 
-@Html.DisplayForModel()
+<dl style="font-size: 18px">
+	<dt class="lead">@Html.LabelFor(m => m.UserName)</dt>
+	<dd>@Html.DisplayTextFor(m => m.UserName)</dd>
+
+	<dt class="lead">@Html.LabelFor(m => m.RealName)</dt>
+	<dd>@Html.DisplayTextFor(m => m.RealName)</dd>
+
+	<dt class="lead">@Html.LabelFor(m => m.Email)</dt>
+	<dd>@Html.DisplayTextFor(m => m.Email)</dd>
+
+	<dt class="lead">@Html.LabelFor(m => m.Adress)</dt>
+	<dd>@Html.DisplayTextFor(m => m.Adress)</dd>
+
+	<dt class="lead">@Html.LabelFor(m => m.Gender)</dt>
+	<dd>@Html.DisplayTextFor(m => m.Gender)</dd>
+
+	<dt class="lead">@Html.LabelFor(m => m.Age)</dt>
+	<dd>@Html.DisplayTextFor(m => m.Age)</dd>
+</dl>
+
+<small class="text-black-50">@Html.DisplayTextFor(m => m.Id)</small>

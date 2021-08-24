@@ -1,12 +1,13 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
     ViewBag.Title = "My profile";
+	int i = 0;
 }
 
 <h2 class="display-2">My profile - @User.Identity.Name</h2>
 
 <div class="row">
-	<div class="col-md-4">
+	<div class="col-md-4 mb-5">
 		<h3 class="display-6">My info</h3>
 		<p>
 			<table class="table table-borderless">
@@ -15,34 +16,68 @@
 					<td>@Html.DisplayFor(m => m.UserName)</td>
 				</tr>
 				<tr>
+					<td><em>@Html.LabelFor(m => m.RealName)</em></td>
+					<td>@Html.DisplayFor(m => m.RealName)</td>
+				</tr>
+				<tr>
 					<td><em>@Html.LabelFor(m => m.Email)</em></td>
 					<td>@Html.DisplayFor(m => m.Email)</td>
 				</tr>
-				<tr>
-					<td><em>@Html.LabelFor(m => m.Gender)</em></td>
-					<td>@Html.DisplayFor(m => m.Gender)</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
 			</table>
 		</p>
-		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName })
-		<a href="/Account/ProfileInfo/@User.Identity.Name" class="btn btn-outline-info btn-sm">More info</a>
+		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName }, new { @class = "btn btn-sm btn-outline-warning container-fluid" })
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-md-4 mb-5">
 		<h3 class="display-6">My friends</h3>
 		<p>
-			нет друзей....
+			<table class="table table-borderless table-hover">
+				@if (ViewBag.Friends.Count == 0)
+				{ 
+					<tr>
+						<td>You haven't friended anyone... :(</td>
+					</tr>
+				}
+				@foreach (var friend in ViewBag.Friends)
+				{
+					if (i == 3)
+					{
+						i = 0;
+						break;
+					}
+					<tr>
+						<td>
+							<em>@friend.UserName (@friend.RealName)</em>
+						</td>
+						<td style="text-align: right">@Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName })</td>
+					</tr>
+					i = i + 1;
+				}
+			</table>
 		</p>
+		<div class="row">
+			<div class="col">
+				@if (ViewBag.Friends.Count == 0)
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid disabled" })
+				}
+				else
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid" })
+				}
+			</div>
+			<div class="col">
+				@Html.ActionLink("Add friend", "PeopleList", "Account", new { @class = "btn btn-sm btn-outline-warning container-fluid" })
+			</div>
+		</div>
 	</div>
 
-	<div class="col-md-4">
+	<div class="col-md-4 mb-5">
 		<h3 class="display-6">Settings</h3>
-		<p>
-			кнопочки
-		</p>
+		<div class="btn-group-sm">
+			@Html.ActionLink("Edit info", "ProfileEdit", "Account", new { @class = "btn btn-sm btn-outline-secondary" }) 
+			@Html.ActionLink("Change password", "ChangePassword", "Account", new { @class = "btn btn-sm btn-outline-secondary" })
+			@Html.ActionLink("Delete account", "DeleteAccount", "Account", new { @class = "btn btn-sm btn-outline-danger" })
+		</div>
 	</div>
 </div>
