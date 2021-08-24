@@ -241,6 +241,29 @@ namespace Chatto.Controllers
             return RedirectToAction("Home");
 		}
 
+        [Authorize]
+        public ViewResult DeleteAccount()
+		{
+            return View();
+		}
+
+		[HttpPost]
+		[Authorize]
+		public ActionResult DeleteAccount(string confirmation)
+		{
+			if (User.Identity.Name != confirmation)
+                return View("Error");
+
+            var operation = UserService.DeleteAccount(confirmation);
+
+            LogOut();
+
+            if (!operation.Succeeded)
+                return View("Error");
+
+            return RedirectToAction("Index", "Home");
+        }
+
         #endregion
 
         //private async Task SetInitialDataAsync()

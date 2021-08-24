@@ -56,6 +56,25 @@ namespace Chatto.BLL.Services
 				return new OperationDetails(false, "This User name already exists!", "UserName");
 		}
 
+		public OperationDetails DeleteAccount(string userName)
+		{
+			ApplicationUser user = DataBase.UserManager.FindByName(userName);
+
+			var userFriendList = StringToList(user.ClientProfile.Friends);
+
+			foreach (var friend in userFriendList)
+				RemoveFriend(friend, userName);
+
+			DataBase.ClientManager.Remove(user.ClientProfile);
+
+			var operation = DataBase.UserManager.Delete(user);
+
+			if (!operation.Succeeded)
+				return new OperationDetails(false, "Guru meditation. Account removal failure.", userName);
+
+			return new OperationDetails(true, "Account deleted successfully!", "");
+		}
+
 		public OperationDetails AddFriend(string currentUser, string friendUserName)
 		{
 			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
@@ -205,13 +224,6 @@ namespace Chatto.BLL.Services
 
 			foreach (var item in userDTOs)
 				output += item + ",";
-
-			//for (int i = 0; i < userDTOs.Count - 1; i++)
-			//{
-			//	output += userDTOs[i].ToString() + ",";
-			//}
-
-			//output += userDTOs[userDTOs.Count - 1];
 
 			return output;
 		}
