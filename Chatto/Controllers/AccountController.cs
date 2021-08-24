@@ -126,8 +126,10 @@ namespace Chatto.Controllers
         [Authorize]
         public ViewResult Home()
 		{
+            var zxc = User.Identity.Name;
             UserDTO user = GetUserData(User.Identity.Name);
-            ViewBag.Friends = GetUserFriends();
+            var friends = GetUserFriends();
+            ViewBag.Friends = friends;
 
             return View(user);
 		}
@@ -232,6 +234,13 @@ namespace Chatto.Controllers
                 return Redirect("/Shared/Error.cshtml");
 		}
 
+        [Authorize]
+        public ActionResult RemoveFriend(string userName)
+		{
+            var operation = UserService.RemoveFriend(User.Identity.Name, userName);
+            return RedirectToAction("Home");
+		}
+
         #endregion
 
         //private async Task SetInitialDataAsync()
@@ -266,18 +275,22 @@ namespace Chatto.Controllers
             List<UserDTO> friendsDTOs = new List<UserDTO>();
 
             foreach (var friend in friends)
-                friendsDTOs.Add(GetUserData(friend));
+                friendsDTOs.Add(GetUserData(friend.UserName));
 
             return friendsDTOs;
         }
 
-        private List<string> StringToList(string str)
-        {
-            List<string> outList = str.Split(',').ToList();
+        private List<UserDTO> StringToList(string friendsList)
+		{
+            List<string> stringList = UserService.StringToList(friendsList);
+            List<UserDTO> users = new List<UserDTO>();
 
-            outList.RemoveAt(outList.Count - 1);
+            foreach(var user in stringList)
+			{
+                users.Add(GetUserData(user));
+			}
 
-            return outList;
-        }
+            return users;
+		}
     }
 }

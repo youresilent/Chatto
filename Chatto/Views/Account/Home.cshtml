@@ -32,6 +32,12 @@
 		<h3 class="display-6">My friends</h3>
 		<p>
 			<table class="table table-borderless table-hover">
+				@if (ViewBag.Friends.Count == 0)
+				{ 
+					<tr>
+						<td>You haven't friended anyone... :(</td>
+					</tr>
+				}
 				@foreach (var friend in ViewBag.Friends)
 				{
 					if (i == 3)
@@ -51,7 +57,14 @@
 		</p>
 		<div class="row">
 			<div class="col">
-				@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid" })
+				@if (ViewBag.Friends.Count == 0)
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid disabled" })
+				}
+				else
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid" })
+				}
 			</div>
 			<div class="col">
 				@Html.ActionLink("Add friend", "PeopleList", "Account", new { @class = "btn btn-sm btn-outline-warning container-fluid" })

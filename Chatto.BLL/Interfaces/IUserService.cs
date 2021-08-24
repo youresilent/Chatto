@@ -20,8 +20,12 @@ namespace Chatto.BLL.Interfaces
 
 		OperationDetails AddFriend(string currentUser, string friendUserName);
 
+		OperationDetails RemoveFriend(string currentUser, string friendUserName);
+
 		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
 
 		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
+
+		List<string> StringToList(string friendsList);
 	}
 }
