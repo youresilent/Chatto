@@ -16,8 +16,9 @@ namespace Chatto.Controllers
 {
     public class AccountController : Controller
     {
-		#region init
-		private IUserService UserService
+        #region init
+
+        private IUserService UserService
 		{
 			get
 			{
@@ -125,11 +126,19 @@ namespace Chatto.Controllers
         [Authorize]
         public ViewResult Home()
 		{
+            var zxc = User.Identity.Name;
             UserDTO user = GetUserData(User.Identity.Name);
+            var friends = GetUserFriends();
+            ViewBag.Friends = friends;
+
             return View(user);
 		}
 
-        [Authorize]
+		#endregion
+
+		#region profile-methods
+
+		[Authorize]
         [Route("Account/ProfileInfo/{userName}")]
         public ViewResult ProfileInfo(string userName)
 		{
@@ -180,6 +189,7 @@ namespace Chatto.Controllers
             return View();
 		}
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordModel model)
@@ -192,32 +202,63 @@ namespace Chatto.Controllers
                 if (operation.Succeeded)
                     return RedirectToAction("Home");
                 else
-			    {
                     ModelState.AddModelError(operation.Property, operation.Message);
-			    }
 			}
 
             return View(model);
 		}
 
-		#endregion
+        [Authorize]
+        public ViewResult PeopleList()
+		{
+            ViewBag.Users = UserService.GetAllUsers();
+            return View(GetUserData(User.Identity.Name));
+		}
 
-		//private async Task SetInitialDataAsync()
-		//{
-		//	await UserService.SetInitialData(new BLL.DTO.UserDTO
-		//	{
-		//		Adress = "ADMINADRESS",
-		//		Age = 10,
-		//		UserName = "adminadmin",
-		//		Email = "ADMINEMAIL",
-		//		RealName = "ADMINREALNAME",
-		//		Gender = "ADMINGENDER",
-		//		Password = "123123",
-		//		Role = "admin"
-		//	}, new List<string> { "user", "admin" });
-		//}
+        [Authorize]
+        public ViewResult FriendsList()
+		{
+            ViewBag.Friends = GetUserFriends();
 
-		public ActionResult Index()
+            return View();
+		}
+
+        [Authorize]
+        public ActionResult AddFriend(string userName)
+		{
+            OperationDetails operation = UserService.AddFriend(User.Identity.Name, userName);
+
+            if (operation.Succeeded)
+                return RedirectToAction("Home");
+            else
+                return Redirect("/Shared/Error.cshtml");
+		}
+
+        [Authorize]
+        public ActionResult RemoveFriend(string userName)
+		{
+            var operation = UserService.RemoveFriend(User.Identity.Name, userName);
+            return RedirectToAction("Home");
+		}
+
+        #endregion
+
+        //private async Task SetInitialDataAsync()
+        //{
+        //	await UserService.SetInitialData(new BLL.DTO.UserDTO
+        //	{
+        //		Adress = "ADMINADRESS",
+        //		Age = 10,
+        //		UserName = "adminadmin",
+        //		Email = "ADMINEMAIL",
+        //		RealName = "ADMINREALNAME",
+        //		Gender = "ADMINGENDER",
+        //		Password = "123123",
+        //		Role = "admin"
+        //	}, new List<string> { "user", "admin" });
+        //}
+
+        public ActionResult Index()
         {
             return View();
         }
@@ -225,6 +266,31 @@ namespace Chatto.Controllers
         private UserDTO GetUserData(string userName)
 		{
             return UserService.GetUserData(userName);
+		}
+
+        private List<UserDTO> GetUserFriends()
+		{
+            var user = GetUserData(User.Identity.Name);
+            var friends = StringToList(user.Friends);
+            List<UserDTO> friendsDTOs = new List<UserDTO>();
+
+            foreach (var friend in friends)
+                friendsDTOs.Add(GetUserData(friend.UserName));
+
+            return friendsDTOs;
+        }
+
+        private List<UserDTO> StringToList(string friendsList)
+		{
+            List<string> stringList = UserService.StringToList(friendsList);
+            List<UserDTO> users = new List<UserDTO>();
+
+            foreach(var user in stringList)
+			{
+                users.Add(GetUserData(user));
+			}
+
+            return users;
 		}
     }
 }

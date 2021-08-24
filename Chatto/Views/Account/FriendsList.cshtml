@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "My friends";
+}
+
+<h2 class="display-2">My friends</h2>
+
+<table class="table table-hover table-borderless">
+    @foreach (var friend in ViewBag.Friends)
+	{
+        <tr>
+            <td>
+                @friend.UserName (@friend.RealName)
+                <div class="text-black-50">@friend.Email</div>
+            </td>
+            <td class="btn-group-sm align-middle" style="text-align: right">
+                @Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-success" })
+                @Html.ActionLink("Profile", "ProfileInfo", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-primary" })
+                @Html.ActionLink("Unfriend", "RemoveFriend", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-danger" })
+            </td>
+        </tr>
+    }
+</table>
+

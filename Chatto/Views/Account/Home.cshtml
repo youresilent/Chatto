@@ -1,6 +1,7 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
     ViewBag.Title = "My profile";
+	int i = 0;
 }
 
 <h2 class="display-2">My profile - @User.Identity.Name</h2>
@@ -30,8 +31,45 @@
 	<div class="col-md-4 mb-5">
 		<h3 class="display-6">My friends</h3>
 		<p>
-			нет друзей....
+			<table class="table table-borderless table-hover">
+				@if (ViewBag.Friends.Count == 0)
+				{ 
+					<tr>
+						<td>You haven't friended anyone... :(</td>
+					</tr>
+				}
+				@foreach (var friend in ViewBag.Friends)
+				{
+					if (i == 3)
+					{
+						i = 0;
+						break;
+					}
+					<tr>
+						<td>
+							<em>@friend.UserName (@friend.RealName)</em>
+						</td>
+						<td style="text-align: right">@Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName })</td>
+					</tr>
+					i = i + 1;
+				}
+			</table>
 		</p>
+		<div class="row">
+			<div class="col">
+				@if (ViewBag.Friends.Count == 0)
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid disabled" })
+				}
+				else
+				{
+					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid" })
+				}
+			</div>
+			<div class="col">
+				@Html.ActionLink("Add friend", "PeopleList", "Account", new { @class = "btn btn-sm btn-outline-warning container-fluid" })
+			</div>
+		</div>
 	</div>
 
 	<div class="col-md-4 mb-5">

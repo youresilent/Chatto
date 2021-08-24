@@ -45,7 +45,7 @@ namespace Chatto.BLL.Services
 
 				await DataBase.UserManager.AddToRoleAsync(user.Id, userDTO.Role);
 
-				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName };
+				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName, Friends = "" };
 				DataBase.ClientManager.Create(clientProfile);
 
 				await DataBase.SaveAsync();
@@ -53,9 +53,53 @@ namespace Chatto.BLL.Services
 				return new OperationDetails(true, "Successful registration!", "");
 			}
 			else
-			{
 				return new OperationDetails(false, "This User name already exists!", "UserName");
-			}
+		}
+
+		public OperationDetails AddFriend(string currentUser, string friendUserName)
+		{
+			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
+			ApplicationUser friend = DataBase.UserManager.FindByName(friendUserName);
+
+			user.ClientProfile.Friends += friendUserName + ",";
+			friend.ClientProfile.Friends += currentUser + ",";
+
+			var operation1 = DataBase.UserManager.Update(user);
+			var operation2 = DataBase.UserManager.Update(friend);
+
+			if (!operation1.Succeeded)
+				return new OperationDetails(false, "Error occured while adding friend! (operation1)", currentUser);
+
+			if (!operation2.Succeeded)
+				return new OperationDetails(false, "Error occured while adding friend! (operation2)", friendUserName);
+
+			return new OperationDetails(true, "Added friend successfully!", "");
+		}
+
+		public OperationDetails RemoveFriend(string currentUser, string friendUserName)
+		{
+			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
+			ApplicationUser friend = DataBase.UserManager.FindByName(friendUserName);
+
+			var userFriendList = StringToList(user.ClientProfile.Friends);
+			userFriendList.Remove(friendUserName);
+
+			var otherFriendList = StringToList(friend.ClientProfile.Friends);
+			otherFriendList.Remove(currentUser);
+
+			user.ClientProfile.Friends = ListToString(userFriendList);
+			friend.ClientProfile.Friends = ListToString(otherFriendList);
+
+			var operation1 = DataBase.UserManager.Update(user);
+			var operation2 = DataBase.UserManager.Update(friend);
+
+			if (!operation1.Succeeded)
+				return new OperationDetails(false, "Error occured while removing friend! (operation1)", currentUser);
+
+			if (!operation2.Succeeded)
+				return new OperationDetails(false, "Error occured while removing friend! (operation2)", friendUserName);
+
+			return new OperationDetails(true, "Removed friend successfully!", "");
 		}
 
 		public UserDTO GetUserData(string userName)
@@ -71,9 +115,23 @@ namespace Chatto.BLL.Services
 				Gender = tempUser.ClientProfile.Gender,
 				Age = tempUser.ClientProfile.Age,
 				RealName = tempUser.ClientProfile.RealName,
+				Friends = tempUser.ClientProfile.Friends
 			};
 
 			return user;
+		}
+
+		public List<UserDTO> GetAllUsers()
+		{
+			List<UserDTO> list = new List<UserDTO>();
+			var users = DataBase.UserManager.Users.ToList();
+
+			foreach (var item in users)
+			{
+				list.Add(GetUserData(item.UserName));
+			}
+
+			return list;
 		}
 
 		public OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo)
@@ -126,6 +184,36 @@ namespace Chatto.BLL.Services
 
 				await Create(adminDTO);
 			}
+		}
+
+		public List<string> StringToList(string str)
+		{
+			List<string> outList = str.Split(',').ToList();
+
+			if (outList[outList.Count - 1] == "")
+				outList.RemoveAt(outList.Count - 1);
+
+			return outList;
+		}
+
+		private string ListToString(List<string> userDTOs)
+		{
+			if (userDTOs.Count == 0)
+				return "";
+
+			var output = "";
+
+			foreach (var item in userDTOs)
+				output += item + ",";
+
+			//for (int i = 0; i < userDTOs.Count - 1; i++)
+			//{
+			//	output += userDTOs[i].ToString() + ",";
+			//}
+
+			//output += userDTOs[userDTOs.Count - 1];
+
+			return output;
 		}
 	}
 }
