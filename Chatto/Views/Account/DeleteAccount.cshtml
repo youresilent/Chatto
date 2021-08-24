@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "DeleteAccount";
+}
+
+<h2 class="display-2">Delete account</h2>
+
+<div class="lead">Are you sure? If so, enter your user name in text box below</div>
+
+@using (Html.BeginForm("DeleteAccount", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="form-group mt-4 mb-4">
+		<div>
+			@Html.TextBox("confirmation", "", new { @class = "form-control" })
+		</div>
+    </div>
+
+	<div class="btn-group-sm">
+		<input type="submit" class="btn btn-sm btn-outline-danger" value="Confirm" />
+		<a href="/Account/Home" class="btn btn-sm btn-outline-success">No, go back!</a>
+	</div>
+}

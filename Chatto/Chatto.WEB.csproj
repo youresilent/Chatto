@@ -219,6 +219,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\PeopleList.cshtml" />
     <Content Include="Views\Account\FriendsList.cshtml" />
+    <Content Include="Views\Account\DeleteAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
