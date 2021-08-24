@@ -15,5 +15,19 @@ namespace Chatto.BLL.Interfaces
 		Task SetInitialData(UserDTO adminDTO, List<string> roles);
 
 		UserDTO GetUserData(string userName);
+
+		List<UserDTO> GetAllUsers();
+
+		OperationDetails AddFriend(string currentUser, string friendUserName);
+
+		OperationDetails RemoveFriend(string currentUser, string friendUserName);
+
+		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
+
+		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
+
+		OperationDetails DeleteAccount(string userName);
+
+		List<string> StringToList(string friendsList);
 	}
 }

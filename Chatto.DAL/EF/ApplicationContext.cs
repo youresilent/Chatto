@@ -9,6 +9,8 @@ namespace Chatto.DAL.EF
 		public ApplicationContext(string connectionString) : base(connectionString)
 		{ }
 
+		//public ApplicationContext() : base("name=IdentityDb") { }
+
 		public DbSet<ClientProfile> ClientProfiles { get; set; }
 	}
 }

@@ -11,9 +11,16 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                @Html.ActionLink("Chatto", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
+			<div class="navbar-header">
+				@if (Request.IsAuthenticated)
+				{
+					@Html.ActionLink("Chatto - To Home", "Home", "Account", new { area = "" }, new { @class = "navbar-brand" })
+				}
+				else
+				{
+					@Html.ActionLink("Chatto", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				}
+			</div>
             <div class="">
                 <ul class="nav navbar-nav">
                     @Html.Partial("_LoginPartial")
