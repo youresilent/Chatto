@@ -35,18 +35,9 @@
 	}
 
 	$.connection.hub.start().done(function () {
-
 		console.log('connected! ' + hubVar.connection.id);
 
 		hubVar.server.connect(document.getElementById('userName').getAttribute('value'));
-
-		$('#addFriendNotification').click(function () {
-			hubVar.server.sendNotification(document.getElementById('friendUserName').getAttribute('value'), 'Someone added you to their friendslist! Reloading page in 2 seconds');
-		});
-
-		$('#removeFriendNotification').click(function () {
-			hubVar.server.sendNotification(document.getElementById('friendUserName').getAttribute('value'), 'Someone removed you from their friendslist! Reloading page in 2 seconds');
-		});
 	})
 
 	function htmlEncode(value) {
