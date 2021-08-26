@@ -1,6 +1,7 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Infrastructure;
 using Chatto.BLL.Interfaces;
+using Chatto.Hubs;
 using Chatto.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -224,22 +225,37 @@ namespace Chatto.Controllers
 		}
 
         [Authorize]
-        public ActionResult AddFriend(string userName)
+        public ActionResult AddFriend(string friendUserName)
 		{
-            OperationDetails operation = UserService.AddFriend(User.Identity.Name, userName);
+            string currentUserName = User.Identity.Name;
+
+            OperationDetails operation = UserService.AddFriend(currentUserName, friendUserName);
 
             if (operation.Succeeded)
+			{
+                SignalHub.Static_SendNotification(currentUserName, friendUserName, "has added you to their friendslist! Refreshing page...");
                 return RedirectToAction("Home");
+			}
             else
                 return Redirect("/Shared/Error.cshtml");
 		}
 
         [Authorize]
-        public ActionResult RemoveFriend(string userName)
+        public ActionResult RemoveFriend(string friendUserName)
 		{
-            var operation = UserService.RemoveFriend(User.Identity.Name, userName);
-            return RedirectToAction("Home");
-		}
+            string currentUserName = User.Identity.Name;
+
+            OperationDetails operation = UserService.RemoveFriend(User.Identity.Name, friendUserName);
+
+            if (operation.Succeeded)
+			{
+                SignalHub.Static_SendNotification(currentUserName, friendUserName, "has removed you from their friendslist! Refreshing page...");
+                return RedirectToAction("Home");
+			}
+            else
+                return Redirect("/Shared/Error.cshtml");
+
+        }
 
         [Authorize]
         public ViewResult DeleteAccount()
