@@ -1,31 +1,32 @@
 ﻿using Chatto.Models;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Chatto.Hubs
 {
+	[HubName("signalHub")]
 	public class SignalHub : Hub
 	{
-		public static List<HubUser> Users = new List<HubUser>();
+		private static List<HubUser> Users = new List<HubUser>();
 
-		private static IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext("SignalHub");
+		private static readonly IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<SignalHub>();
 
-		public static void Static_SendNotification(string friendUserName, string message)
+		public static void Static_SendNotification(string currentUser, string friendUserName, string message)
 		{
-			HubUser friend = Users.FirstOrDefault(u => u.UserName == friendUserName);
+			HubUser user = Users.Find(u => u.UserName == friendUserName);
 
-			if (friend == null)
-				return;
-
-			hubContext.Clients.Client(friend.ConnectionId).showNotification(friendUserName, message);
+			if (user != null)
+				hubContext.Clients.Client(user.ConnectionId).showNotification(currentUser, message);
 		}
 
-		#region connectivity
 		public void Connect(string userName)
 		{
 			string id = Context.ConnectionId;
+			userName = Context.User.Identity.Name;
 
 			if (!Users.Any(u => u.ConnectionId == id))
 			{
@@ -37,16 +38,12 @@ namespace Chatto.Hubs
 
 		public override Task OnDisconnected(bool stopCalled)
 		{
-			var item = Users.FirstOrDefault(u => u.ConnectionId == Context.ConnectionId);
+			HubUser item = Users.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
 
 			if (item != null)
-			{
 				Users.Remove(item);
-			}
 
 			return base.OnDisconnected(stopCalled);
 		}
-
-		#endregion
 	}
 }
