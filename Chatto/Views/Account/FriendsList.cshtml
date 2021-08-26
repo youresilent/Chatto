@@ -16,9 +16,9 @@
 				<div class="text-black-50">@friend.Email</div>
 			</td>
 			<td class="btn-group-sm align-middle" style="text-align: right">
-				@Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-success" })
-				@Html.ActionLink("Profile", "ProfileInfo", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-primary" })
-				@Html.ActionLink("Unfriend", "RemoveFriend", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-danger" })
+				@Html.ActionLink("Chat", "ChatPage", "Account", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-success" })
+				@Html.ActionLink("Profile", "ProfileInfo", "Account", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-primary" })
+				@Html.ActionLink("Unfriend", "RemoveFriend", "Account", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-danger" })
 			</td>
 		</tr>
 	}

@@ -241,11 +241,21 @@ namespace Chatto.Controllers
 		}
 
         [Authorize]
-        public ActionResult RemoveFriend(string userName)
+        public ActionResult RemoveFriend(string friendUserName)
 		{
-            var operation = UserService.RemoveFriend(User.Identity.Name, userName);
-            return RedirectToAction("Home");
-		}
+            string currentUserName = User.Identity.Name;
+
+            OperationDetails operation = UserService.RemoveFriend(User.Identity.Name, friendUserName);
+
+            if (operation.Succeeded)
+			{
+                SignalHub.Static_SendNotification(currentUserName, friendUserName, "has removed you from their friendslist! Refreshing page...");
+                return RedirectToAction("Home");
+			}
+            else
+                return Redirect("/Shared/Error.cshtml");
+
+        }
 
         [Authorize]
         public ViewResult DeleteAccount()
