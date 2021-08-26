@@ -5,6 +5,7 @@
 	hubVar.client.showNotification = function (userName, message) {
 		document.getElementById('notificationBlock').removeAttribute('hidden');
 		document.getElementById('notificationBlock').append(htmlEncode(userName) + ' ' + htmlEncode(message));
+
 		$.fn.playSound();
 
 		setTimeout(function () {
@@ -22,15 +23,12 @@
 	}
 
 	hubVar.client.onConnected = function (id, userName, allUsers) {
-
 		for (i = 0; i < allUsers.length; i++) {
-
 			AddUser(allUsers[i].ConnectionId, allUsers[i].User);
 		}
 	}
 
 	hubVar.client.onUserDisconnected = function (id, userName) {
-
 		$('#' + id).remove();
 	}
 
@@ -42,15 +40,14 @@
 
 	function htmlEncode(value) {
 		var encodedValue = $('<div />').text(value).html();
+
 		return encodedValue;
 	}
 
 	function AddUser(id, name) {
-
 		var userId = $('#hdId').val();
 
 		if (userId != id) {
-
 			$("#chatusers").append('<p id="' + id + '"><b>' + name + '</b></p>');
 		}
 	}
