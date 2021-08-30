@@ -26,7 +26,7 @@ namespace Chatto.App_Start
 
 		private IUserService CreateUserService()
 		{
-			return serviceCreator.CreateUserService("IdentityDb");
+			return serviceCreator.CreateUserService();
 		}
 	}
 }
