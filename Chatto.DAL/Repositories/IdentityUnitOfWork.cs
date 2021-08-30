@@ -20,7 +20,7 @@ namespace Chatto.DAL.Repositories
 
 		public IdentityUnitOfWork(string connectionString)
 		{
-			DataBase = new ApplicationContext(connectionString);
+			DataBase = new ApplicationContext();
 
 			userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(DataBase));
 			roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(DataBase));
