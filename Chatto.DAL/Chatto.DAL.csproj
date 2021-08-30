@@ -60,6 +60,7 @@
     <Compile Include="EF\ApplicationContext.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
+    <Compile Include="Entities\ClientMessage.cs" />
     <Compile Include="Entities\ClientProfile.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />

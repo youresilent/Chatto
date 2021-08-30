@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chatto.DAL.Entities
 {
 	public class ClientProfile
 	{
-		[Key]
-		[ForeignKey("ApplicationUser")]
 		public string Id { get; set; }
 
 		public string RealName { get; set; }
