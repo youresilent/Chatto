@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chatto.DAL.Interfaces
 {
-	public interface IClientMessage : IDisposable
+	public interface IMessageManager : IDisposable
 	{
 		void Create(ClientMessage message);
 

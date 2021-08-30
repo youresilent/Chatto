@@ -12,7 +12,7 @@ namespace Chatto.DAL.Interfaces
 
 		IClientManager ClientManager { get; }
 
-		IClientMessage MessageManager { get; }
+		IMessageManager MessageManager { get; }
 
 		Task SaveAsync();
 	}
