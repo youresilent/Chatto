@@ -60,6 +60,7 @@
     <Compile Include="DTO\MessageDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
+    <Compile Include="Interfaces\IMessageService.cs" />
     <Compile Include="Interfaces\IServiceCreator.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Migrations\202108191045548_InitialCreate.cs" />
