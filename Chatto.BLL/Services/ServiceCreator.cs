@@ -5,9 +5,9 @@ namespace Chatto.BLL.Services
 {
 	public class ServiceCreator : IServiceCreator
 	{
-		public IUserService CreateUserService(string connection)
+		public IUserService CreateUserService()
 		{
-			return new UserService(new IdentityUnitOfWork(connection));
+			return new UserService(new IdentityUnitOfWork());
 		}
 	}
 }
