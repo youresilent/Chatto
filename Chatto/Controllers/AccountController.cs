@@ -46,7 +46,6 @@ namespace Chatto.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Register(RegisterModel registerModel)
 		{
-			//await SetInitialDataAsync();
 			if (ModelState.IsValid)
 			{
 				UserDTO userDTO = new UserDTO
@@ -277,21 +276,6 @@ namespace Chatto.Controllers
 		#endregion
 
 		#region non-action methods
-
-		//private async Task SetInitialDataAsync()
-		//{
-		//	await UserService.SetInitialData(new BLL.DTO.UserDTO
-		//	{
-		//		Adress = "ADMINADRESS",
-		//		Age = 10,
-		//		UserName = "adminadmin",
-		//		Email = "ADMINEMAIL",
-		//		RealName = "ADMINREALNAME",
-		//		Gender = "ADMINGENDER",
-		//		Password = "123123",
-		//		Role = "admin"
-		//	}, new List<string> { "user", "admin" });
-		//}
 
 		private UserDTO GetUserData(string userName)
 		{
