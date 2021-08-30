@@ -9,5 +9,10 @@ namespace Chatto.BLL.Services
 		{
 			return new UserService(new IdentityUnitOfWork());
 		}
+
+		public IMessageService CreateMessageService()
+		{
+			return new MessageService(new IdentityUnitOfWork());
+		}
 	}
 }
