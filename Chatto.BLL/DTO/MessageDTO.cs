@@ -8,7 +8,7 @@ namespace Chatto.BLL.DTO
 {
 	public class MessageDTO
 	{
-		public string Id { get; set; }
+		public int Id { get; set; }
 
 		public string Sender { get; set; }
 
