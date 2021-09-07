@@ -13,7 +13,6 @@ namespace Chatto.BLL.Services
 {
 	public class MessageService : IMessageService
 	{
-		private int id = 0;
 		IUnitOfWork DataBase { get; set; }
 
 		public MessageService(IUnitOfWork uow)
@@ -51,6 +50,19 @@ namespace Chatto.BLL.Services
 			return new OperationDetails(true, "Message was removed!", "");
 		}
 
+		public List<MessageDTO> GetMessages(string currentUserName, string friendUserName)
+		{
+			var clientMessagesList = DataBase.MessageManager.GetMessages(currentUserName, friendUserName);
+			var messageDTOList = new List<MessageDTO>();
+
+			foreach (var message in clientMessagesList)
+			{
+				messageDTOList.Add(GetMessageDTO(message));
+			}
+
+			return messageDTOList;
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
@@ -60,7 +72,7 @@ namespace Chatto.BLL.Services
 		{
 			ClientMessage clientMessage = new ClientMessage
 			{
-				Id = Convert.ToString(++id),
+				Id = messageDTO.Id,
 				Sender = messageDTO.Sender,
 				Recipient = messageDTO.Recipient,
 				Message = messageDTO.Message,
@@ -68,6 +80,20 @@ namespace Chatto.BLL.Services
 			};
 
 			return clientMessage;
+		}
+
+		private MessageDTO GetMessageDTO(ClientMessage clientMessage)
+		{
+			MessageDTO messageDTO = new MessageDTO
+			{
+				Id = clientMessage.Id,
+				Sender = clientMessage.Sender,
+				Recipient = clientMessage.Recipient,
+				Message = clientMessage.Message,
+				SendDateTime = clientMessage.SendDateTime
+			};
+
+			return messageDTO;
 		}
 
 	}

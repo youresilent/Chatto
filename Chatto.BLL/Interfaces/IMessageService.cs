@@ -1,6 +1,7 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Chatto.BLL.Interfaces
@@ -10,5 +11,7 @@ namespace Chatto.BLL.Interfaces
 		Task<OperationDetails> Create(MessageDTO messageDTO);
 
 		Task<OperationDetails> Remove(MessageDTO messageDTO);
+
+		List<MessageDTO> GetMessages(string currentUserName, string friendUserName);
 	}
 }
