@@ -2,6 +2,8 @@
 using Autofac.Integration.Mvc;
 using Chatto.BLL.Interfaces;
 using Chatto.BLL.Services;
+using Chatto.DAL.EF;
+using Chatto.DAL.Interfaces;
 using Chatto.DAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,9 @@ namespace Chatto.BLL.Services
 		{
 			var builder = new ContainerBuilder();
 
-			builder.RegisterType<MessageService>().As<IMessageService>().WithParameter("uow", new IdentityUnitOfWork());
+			builder.RegisterType<MessageService>().As<IMessageService>().WithParameter("uow", new IdentityUnitOfWork()).SingleInstance();
+
+			builder.RegisterType<MessageManager>().As<IMessageManager>().WithParameter("db", new ApplicationContext()).InstancePerLifetimeScope();
 
 			return builder;
 		}
