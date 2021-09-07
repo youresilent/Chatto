@@ -24,15 +24,36 @@ namespace Chatto.DAL.Repositories
 			DataBase.SaveChanges();
 		}
 
-		public void Dispose()
+		public List<ClientMessage> GetMessages(string currentUserName, string friendUserName)
 		{
-			DataBase.Dispose();
+			var userMessagesEnumerable = DataBase.ClientMessages.ToList()
+				.Where(m => (m.Sender == currentUserName && m.Recipient == friendUserName) ||
+					(m.Sender == friendUserName && m.Recipient == currentUserName))
+				.OrderBy(m => m.SendDateTime)
+				.Select(m => new ClientMessage
+				{
+					Id = m.Id,
+					Message = m.Message,
+					Sender = m.Sender,
+					Recipient = m.Recipient,
+					SendDateTime = m.SendDateTime
+				});
+
+			//исправить сообщение в БД
+
+			var userMessagesList = userMessagesEnumerable.ToList();
+
+			return userMessagesList;
 		}
 
 		public void Remove(ClientMessage message)
 		{
 			DataBase.ClientMessages.Remove(message);
 			DataBase.SaveChanges();
+		}
+		public void Dispose()
+		{
+			DataBase.Dispose();
 		}
 	}
 }
