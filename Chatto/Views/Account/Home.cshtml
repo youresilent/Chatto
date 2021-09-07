@@ -51,7 +51,7 @@
 						<td>
 							<em>@friend.UserName (@friend.RealName)</em>
 						</td>
-						<td style="text-align: right">@Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName })</td>
+						<td style="text-align: right">@Html.ActionLink("Chat", "ChatRoom", "Chat", new { friendUserName = friend.UserName }, null)</td>
 					</tr>
 					i = i + 1;
 				}
