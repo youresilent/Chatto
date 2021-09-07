@@ -1,5 +1,7 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Interfaces;
+using Chatto.Hubs;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +12,45 @@ namespace Chatto.Controllers
 {
     public class ChatController : Controller
     {
-        private readonly IMessageService _messageService;
+		private readonly IMessageService _messageService;
 
-        public ChatController(IMessageService messageService)
+		public ChatController(IMessageService messageService)
 		{
-            _messageService = messageService;
+			_messageService = messageService;
 		}
 
-        // GET: Chat
-        public ActionResult ChatRoom()
+		public ActionResult ChatRoom(string friendUserName)
         {
-            _messageService.Create(new MessageDTO { Id = "0", Message = "zxc", Recipient = "recipient", Sender = "sender", SendDateTime = DateTime.Now });
-            return Content(_messageService.ToString());
+			List<MessageDTO> messages = _messageService.GetMessages(User.Identity.Name, friendUserName);
+			ViewBag.FriendUserName = friendUserName;
+
+			return View(messages);
         }
-    }
+
+        [HttpPost]
+        public ActionResult ChatAction(string messageText, string currentUserName, string friendUserName)
+		{
+			var message = GetMessageDTO(currentUserName, friendUserName, messageText, DateTime.Now);
+
+			var operation = _messageService.Create(message);
+
+			SignalHub.Static_SendMessage(message, currentUserName);
+			SignalHub.Static_SendMessage(message, friendUserName);
+
+			return Content(operation.Result.Message);
+		}
+
+		private MessageDTO GetMessageDTO(string sender, string recipient, string message, DateTime sendDateTime)
+		{
+			MessageDTO messageDTO = new MessageDTO
+			{
+				Sender = sender,
+				Recipient = recipient,
+				Message = message,
+				SendDateTime = sendDateTime
+			};
+
+			return messageDTO;
+		}
+	}
 }
