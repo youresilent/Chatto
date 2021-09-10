@@ -1,6 +1,5 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Infrastructure;
-using Chatto.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;

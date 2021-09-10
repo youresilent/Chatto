@@ -58,24 +58,6 @@ namespace Chatto.BLL.Services
 				return new OperationDetails(false, "This User name already exists!", "UserName");
 		}
 
-		private void CheckRoles()
-		{
-			ApplicationRole userRole = DataBase.RoleManager.FindByName("user");
-			ApplicationRole adminRole = DataBase.RoleManager.FindByName("admin");
-
-			if (userRole == null)
-			{
-				userRole = new ApplicationRole { Name = "user" };
-				DataBase.RoleManager.Create(userRole);
-			}
-
-			if (adminRole == null)
-			{
-				adminRole = new ApplicationRole { Name = "admin" };
-				DataBase.RoleManager.Create(adminRole);
-			}
-		}
-
 		public OperationDetails DeleteAccount(string userName)
 		{
 			ApplicationUser user = DataBase.UserManager.FindByName(userName);
@@ -176,7 +158,7 @@ namespace Chatto.BLL.Services
 		public OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo)
 		{
 			ApplicationUser currentUser = DataBase.UserManager.FindByName(newUserInfo.UserName);
-			
+
 			currentUser.ClientProfile.Adress = newUserInfo.Adress;
 			currentUser.ClientProfile.Age = newUserInfo.Age;
 			currentUser.Email = newUserInfo.Email;
@@ -233,6 +215,24 @@ namespace Chatto.BLL.Services
 				outList.RemoveAt(outList.Count - 1);
 
 			return outList;
+		}
+
+		private void CheckRoles()
+		{
+			ApplicationRole userRole = DataBase.RoleManager.FindByName("user");
+			ApplicationRole adminRole = DataBase.RoleManager.FindByName("admin");
+
+			if (userRole == null)
+			{
+				userRole = new ApplicationRole { Name = "user" };
+				DataBase.RoleManager.Create(userRole);
+			}
+
+			if (adminRole == null)
+			{
+				adminRole = new ApplicationRole { Name = "admin" };
+				DataBase.RoleManager.Create(adminRole);
+			}
 		}
 
 		private string ListToString(List<string> userDTOs)
