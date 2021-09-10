@@ -13,5 +13,7 @@ namespace Chatto.BLL.Interfaces
 		Task<OperationDetails> Remove(MessageDTO messageDTO);
 
 		List<MessageDTO> GetMessages(string currentUserName, string friendUserName);
+
+		void RemoveMessages(string userName);
 	}
 }
