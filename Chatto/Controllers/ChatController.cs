@@ -37,8 +37,8 @@ namespace Chatto.Controllers
 
 			if (operation.Result.Succeeded)
 			{
-				SignalHub.Static_SendMessage(message, currentUserName);
-				SignalHub.Static_SendMessage(message, friendUserName);
+				SignalHub.Static_SendMessage(message, currentUserName, friendUserName);
+				SignalHub.Static_SendMessage(message, friendUserName, currentUserName);
 
 				SignalHub.Static_SendMessageNotification(friendUserName, currentUserName);
 

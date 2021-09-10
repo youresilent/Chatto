@@ -17,6 +17,11 @@ namespace Chatto.Controllers
 	{
 		#region init
 
+		private string[] statusStrings = new string[] {
+			"has added you to their friendslist! Refreshing page...",
+			"has removed you from their friendslist! Refreshing page..."
+		};
+
 		private readonly IMessageService _messageService;
 		private IUserService UserService
 		{
@@ -232,7 +237,7 @@ namespace Chatto.Controllers
 
 			if (operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, "has added you to their friendslist! Refreshing page...");
+				SignalHub.Static_SendNotification(currentUserName, friendUserName, statusStrings[0]);
 				return RedirectToAction("Home");
 			}
 			else
@@ -248,7 +253,7 @@ namespace Chatto.Controllers
 
 			if (operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, "has removed you from their friendslist! Refreshing page...");
+				SignalHub.Static_SendNotification(currentUserName, friendUserName, statusStrings[1]);
 				return RedirectToAction("Home");
 			}
 			else
