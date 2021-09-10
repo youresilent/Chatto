@@ -1,0 +1,31 @@
+﻿@model Chatto.BLL.DTO.UserDTO
+@{
+	ViewBag.Title = "Users list";
+}
+
+<h2 class="display-2">Registered users</h2>
+
+<table class="table table-hover table-borderless col-md-4">
+	@foreach (var user in ViewBag.Users)
+	{
+		if (user.UserName != User.Identity.Name)
+		{
+			<tr>
+				<td>
+					@user.UserName (@user.RealName)
+					<div class="text-black-50">@user.Email</div>
+				</td>
+
+				@if (!Model.Friends.Contains(user.UserName))
+				{
+					<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
+				}
+				else
+				{
+					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
+				}
+
+			</tr>
+		}
+	}
+</table>

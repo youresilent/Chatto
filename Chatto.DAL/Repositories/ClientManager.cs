@@ -19,6 +19,12 @@ namespace Chatto.DAL.Repositories
 			DataBase.SaveChanges();
 		}
 
+		public void Remove(ClientProfile item)
+		{
+			DataBase.ClientProfiles.Remove(item);
+			DataBase.SaveChanges();
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();

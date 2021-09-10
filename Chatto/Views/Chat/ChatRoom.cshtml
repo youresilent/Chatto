@@ -1,0 +1,51 @@
+﻿@model List<Chatto.BLL.DTO.MessageDTO>
+@{
+	ViewBag.Title = "Chatting";
+}
+
+<h2 class="display-2" style="display:inline">Chat - @ViewBag.FriendUserName</h2>
+
+<div class="row mt-md-4 mb-5">
+	<textarea id="chatbox" class="col" style="font-family: monospace; border:hidden; resize:none" rows="15" readonly="readonly"></textarea>
+</div>
+
+<div class="row g-3 align-items-center">
+	<div class="col-auto">
+		<label>Enter message:</label>
+	</div>
+	<div class="col">
+		<textarea class="messageText form-control" style="resize: none" rows="1" autofocus="autofocus" id="messageText"></textarea>
+	</div>
+	<div class="col-auto">
+		<input id="Send" class="btn btn-primary" type="button" value="Send" />
+	</div>
+</div>
+
+
+@*<input class="userName" value="@User.Identity.Name" hidden="hidden">*@
+<input class="friendUserName" value="@ViewBag.FriendUserName" hidden="hidden">
+
+@*<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+	<script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
+	<script src='~/signalr/js'></script>
+	<script src="~/Scripts/util.js"></script>*@
+
+<script>
+
+	var messages = @Html.Raw(Json.Encode(Model));
+
+	for (var i = 0; i < messages.length; i++) {
+
+		var jsDate = new Date(parseInt(messages[i].SendDateTime.substr(6)));
+		var dateObject = new Date(jsDate);
+
+		$("#chatbox").val($("#chatbox").val()
+			+ '[' + dateObject.toLocaleString()
+			+ ']\n' + messages[i].Sender
+			+ ': ' + messages[i].Message + '\n\n');
+
+	}
+
+	$('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
+</script>

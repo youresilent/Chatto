@@ -1,0 +1,58 @@
+﻿@model Chatto.BLL.DTO.UserDTO
+@{
+	ViewBag.Title = "Profile edit";
+}
+
+<h2 class="display-2">Edit information</h2>
+
+@using (Html.BeginForm("ProfileEdit", "Account", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+	@Html.AntiForgeryToken()
+
+	<h6 class="display-6">Enter new data</h6>
+
+	@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+	<div class="mb-4">
+
+		@Html.HiddenFor(m => m.Id)
+		@Html.HiddenFor(m => m.UserName)
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.RealName, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(m => m.RealName, new { @class = "form-control", @Value = Model.RealName })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @Value = Model.Email })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.Adress, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(m => m.Adress, new { @class = "form-control", @Value = Model.Adress })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.DropDownListFor(m => m.Gender, new List<SelectListItem> { new SelectListItem { Text = "Male" }, new SelectListItem { Text = "Female" }, new SelectListItem { Text = "??" } }, new { @class = "form-select" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label" })
+			<div class="col-md-10">
+				@Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+			</div>
+		</div>
+	</div>
+
+	<input type="submit" class="btn btn-outline-success" value="Confirm" />
+}
