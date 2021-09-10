@@ -63,6 +63,14 @@ namespace Chatto.BLL.Services
 			return messageDTOList;
 		}
 
+		public void RemoveMessages(string userName)
+		{
+			foreach (var message in DataBase.MessageManager.GetMessagesForRemoval(userName))
+			{
+				DataBase.MessageManager.Remove(message);
+			}
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
