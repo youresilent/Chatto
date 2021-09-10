@@ -1,8 +1,9 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
-    ViewBag.Title = "My profile";
+	ViewBag.Title = "My profile";
 	int i = 0;
 }
+
 
 <h2 class="display-2">My profile - @User.Identity.Name</h2>
 
@@ -33,7 +34,7 @@
 		<p>
 			<table class="table table-borderless table-hover">
 				@if (ViewBag.Friends.Count == 0)
-				{ 
+				{
 					<tr>
 						<td>You haven't friended anyone... :(</td>
 					</tr>
@@ -49,7 +50,7 @@
 						<td>
 							<em>@friend.UserName (@friend.RealName)</em>
 						</td>
-						<td style="text-align: right">@Html.ActionLink("Chat", "ChatPage", "Account", new { userName = friend.UserName })</td>
+						<td style="text-align: right">@Html.ActionLink("Chat", "ChatRoom", "Chat", new { friendUserName = friend.UserName }, null)</td>
 					</tr>
 					i = i + 1;
 				}
@@ -75,9 +76,9 @@
 	<div class="col-md-4 mb-5">
 		<h3 class="display-6">Settings</h3>
 		<div class="btn-group-sm">
-			@Html.ActionLink("Edit info", "ProfileEdit", "Account", new { @class = "btn btn-sm btn-outline-secondary" }) 
-			@Html.ActionLink("Change password", "ChangePassword", "Account", new { @class = "btn btn-sm btn-outline-secondary" })
-			@Html.ActionLink("Delete account", "DeleteAccount", "Account", new { @class = "btn btn-sm btn-outline-danger" })
+			@Html.ActionLink("Edit info", "ProfileEdit", "Account", new { @class = "btn btn-sm btn-outline-secondary mt-1" })
+			@Html.ActionLink("Change password", "ChangePassword", "Account", new { @class = "btn btn-sm btn-outline-secondary mt-1" })
+			@Html.ActionLink("Delete account", "DeleteAccount", "Account", new { @class = "btn btn-sm btn-outline-danger mt-1" })
 		</div>
 	</div>
 </div>

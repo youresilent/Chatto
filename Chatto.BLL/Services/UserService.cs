@@ -33,6 +33,8 @@ namespace Chatto.BLL.Services
 
 		public async Task<OperationDetails> Create(UserDTO userDTO)
 		{
+			CheckRoles();
+
 			ApplicationUser user = await DataBase.UserManager.FindByEmailAsync(userDTO.Email);
 
 			if (user == null)
@@ -54,6 +56,24 @@ namespace Chatto.BLL.Services
 			}
 			else
 				return new OperationDetails(false, "This User name already exists!", "UserName");
+		}
+
+		private void CheckRoles()
+		{
+			ApplicationRole userRole = DataBase.RoleManager.FindByName("user");
+			ApplicationRole adminRole = DataBase.RoleManager.FindByName("admin");
+
+			if (userRole == null)
+			{
+				userRole = new ApplicationRole { Name = "user" };
+				DataBase.RoleManager.Create(userRole);
+			}
+
+			if (adminRole == null)
+			{
+				adminRole = new ApplicationRole { Name = "admin" };
+				DataBase.RoleManager.Create(adminRole);
+			}
 		}
 
 		public OperationDetails DeleteAccount(string userName)
@@ -193,12 +213,12 @@ namespace Chatto.BLL.Services
 		{
 			foreach (var roleName in roles)
 			{
-				var role = await DataBase.RoleManager.FindByNameAsync(roleName);
+				var role = DataBase.RoleManager.FindByName(roleName);
 
 				if (role == null)
 				{
 					role = new ApplicationRole { Name = roleName };
-					await DataBase.RoleManager.CreateAsync(role);
+					DataBase.RoleManager.Create(role);
 				}
 
 				await Create(adminDTO);

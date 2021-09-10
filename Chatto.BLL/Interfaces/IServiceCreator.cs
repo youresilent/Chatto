@@ -2,6 +2,8 @@
 {
 	public interface IServiceCreator
 	{
-		IUserService CreateUserService(string connection);
+		IUserService CreateUserService();
+
+		IMessageService CreateMessageService();
 	}
 }

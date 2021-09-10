@@ -1,6 +1,6 @@
 ﻿@model Chatto.BLL.DTO.UserDTO
 @{
-    ViewBag.Title = "Users list";
+	ViewBag.Title = "Users list";
 }
 
 <h2 class="display-2">Registered users</h2>
@@ -16,15 +16,15 @@
 					<div class="text-black-50">@user.Email</div>
 				</td>
 
-			@if (!Model.Friends.Contains(user.UserName))
-			{
-				<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddFriend", "Account", new { userName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
-			}
-			else
-			{ 
-				<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { userName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
-			}
-				
+				@if (!Model.Friends.Contains(user.UserName))
+				{
+					<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
+				}
+				else
+				{
+					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
+				}
+
 			</tr>
 		}
 	}
