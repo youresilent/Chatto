@@ -34,13 +34,13 @@ namespace Chatto.Hubs
 			}
 		}
 
-		public static void Static_SendMessage(MessageDTO message, string userName)
+		public static void Static_SendMessage(MessageDTO message, string userName, string friendName)
 		{
 			var user = Users.Find(u => u.UserName == userName);
 
 			if (user != null)
 			{
-				hubContext.Clients.Client(user.ConnectionId).addMessage(message.Sender, message.Recipient, message.Message, message.SendDateTime);
+				hubContext.Clients.Client(user.ConnectionId).addMessage(message.Sender, message.Recipient, message.Message, message.SendDateTime, friendName);
 			}
 
 		}

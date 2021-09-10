@@ -17,6 +17,15 @@
 
 		var title = document.getElementsByTagName("title")[0].innerHTML;
 
+		if (title == "Chatting - Chatto") {
+			var friendName = $('.friendUserName').val();
+
+			if (userName != friendName) {
+				notificationBlock.removeAttribute('hidden');
+				document.getElementById('messageNotificationBlock').append(htmlEncode(userName) + ' ' + htmlEncode(message));
+			}
+		}
+
 		if (title != "Chatting - Chatto") {
 
 			var notificationBlock = document.getElementById('messageNotificationBlock');
@@ -34,15 +43,20 @@
 		$.fn.playMessageSound();
 	}
 
-	hubVar.client.addMessage = function (sender, recipient, message, dateTime) {
+	hubVar.client.addMessage = function (sender, recipient, message, dateTime, friendName) {
 
 		var title = document.getElementsByTagName("title")[0].innerHTML;
+		var friendpageName = $('.friendUserName').val();
+		var userName = $('.userName').val()
 
 		if (title == "Chatting - Chatto") {
-			var dateObject = new Date(dateTime);
-			$("#chatbox").val($("#chatbox").val() + '[' + dateObject.toLocaleString() + ']\n' + htmlEncode(sender) + ': ' + htmlEncode(message) + '\n\n');
 
-			$('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+			if (friendpageName == friendName || userName == friendName) {
+				var dateObject = new Date(dateTime);
+				$("#chatbox").val($("#chatbox").val() + '[' + dateObject.toLocaleString() + ']\n' + htmlEncode(sender) + ': ' + htmlEncode(message) + '\n\n');
+
+				$('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+			}
 		}
 	};
 
@@ -73,6 +87,7 @@
 	$.connection.hub.start().done(function () {
 
 		console.log('connected! ' + hubVar.connection.id);
+		console.log($('.friendUserName').val());
 
 		hubVar.server.connect($('.userName').val());
 
@@ -107,7 +122,7 @@
 			});
 
 		});
-	})
+	});
 
 	function htmlEncode(value) {
 		var encodedValue = $('<div />').text(value).html();
