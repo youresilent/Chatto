@@ -3,6 +3,7 @@ using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,8 +40,6 @@ namespace Chatto.DAL.Repositories
 					SendDateTime = m.SendDateTime
 				});
 
-			//исправить сообщение в БД
-
 			var userMessagesList = userMessagesEnumerable.ToList();
 
 			return userMessagesList;
@@ -48,9 +47,31 @@ namespace Chatto.DAL.Repositories
 
 		public void Remove(ClientMessage message)
 		{
-			DataBase.ClientMessages.Remove(message);
+			var dbEntry = DataBase.ClientMessages.First(m => m.Id == message.Id);
+
+			DataBase.Entry(dbEntry).State = EntityState.Deleted;
 			DataBase.SaveChanges();
 		}
+
+		public List<ClientMessage> GetMessagesForRemoval(string userName)
+		{
+			var userMessagesEnumerable = DataBase.ClientMessages.ToList()
+				.Where(m => m.Sender == userName || m.Recipient == userName)
+				.OrderBy(m => m.SendDateTime)
+				.Select(m => new ClientMessage
+				{
+					Id = m.Id,
+					Message = m.Message,
+					Sender = m.Sender,
+					Recipient = m.Recipient,
+					SendDateTime = m.SendDateTime
+				});
+
+			var userMessagesList = userMessagesEnumerable.ToList();
+
+			return userMessagesList;
+		}
+
 		public void Dispose()
 		{
 			DataBase.Dispose();
