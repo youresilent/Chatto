@@ -1,6 +1,6 @@
 ﻿@model List<Chatto.BLL.DTO.MessageDTO>
 @{
-	ViewBag.Title = ViewBag.FriendUserName;
+	ViewBag.Title = "Chatting";
 }
 
 <h2 class="display-2" style="display:inline">Chat - @ViewBag.FriendUserName</h2>
@@ -14,7 +14,7 @@
 		<label>Enter message:</label>
 	</div>
 	<div class="col">
-		<textarea class="messageText form-control" style="resize: none" rows="1" autofocus="autofocus"></textarea>
+		<textarea class="messageText form-control" style="resize: none" rows="1" autofocus="autofocus" id="messageText"></textarea>
 	</div>
 	<div class="col-auto">
 		<input id="Send" class="btn btn-primary" type="button" value="Send" />
@@ -22,13 +22,13 @@
 </div>
 
 
-<input class="userName" value="@User.Identity.Name" hidden="hidden">
+@*<input class="userName" value="@User.Identity.Name" hidden="hidden">*@
 <input class="friendUserName" value="@ViewBag.FriendUserName" hidden="hidden">
 
-<script src="~/Scripts/jquery-3.6.0.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
-<script src='~/signalr/js'></script>
-<script src="~/Scripts/util.js"></script>
+@*<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+	<script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
+	<script src='~/signalr/js'></script>
+	<script src="~/Scripts/util.js"></script>*@
 
 <script>
 
