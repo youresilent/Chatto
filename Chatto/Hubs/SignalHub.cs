@@ -21,7 +21,7 @@ namespace Chatto.Hubs
 			var user = Users.Find(u => u.UserName == friendUserName);
 
 			if (user != null)
-				hubContext.Clients.Client(user.ConnectionId).showNotification(currentUser, message);
+				hubContext.Clients.Client(user.ConnectionId).showFriendNotification(currentUser, message);
 		}
 
 		public static void Static_LoadMessages(List<MessageDTO> messages, string currentUserName)
@@ -38,12 +38,22 @@ namespace Chatto.Hubs
 		{
 			var user = Users.Find(u => u.UserName == userName);
 
-			if (user == null)
+			if (user != null)
 			{
-				return;
+				hubContext.Clients.Client(user.ConnectionId).addMessage(message.Sender, message.Recipient, message.Message, message.SendDateTime);
 			}
 
-			hubContext.Clients.Client(user.ConnectionId).addMessage(message.Sender, message.Recipient, message.Message, message.SendDateTime);
+		}
+
+		public static void Static_SendMessageNotification(string friendUserName, string currentUserName)
+		{
+			var user = Users.Find(u => u.UserName == friendUserName);
+
+			if (user != null)
+			{
+				hubContext.Clients.Client(user.ConnectionId).showMessageNotification(currentUserName, "has sent you a message!");
+			}
+
 		}
 
 		public void Connect(string userName)
