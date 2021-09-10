@@ -16,18 +16,11 @@
 				<div class="text-black-50">@friend.Email</div>
 			</td>
 			<td class="btn-group-sm align-middle" style="text-align: right">
-				@Html.ActionLink("Chat", "ChatPage", "Account", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-success mt-1" })
+				@Html.ActionLink("Chat", "ChatRoom", "Chat", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-success mt-1" })
 				@Html.ActionLink("Profile", "ProfileInfo", "Account", new { userName = friend.UserName }, new { @class = "btn btn-sm btn-outline-primary mt-1" })
 				@Html.ActionLink("Unfriend", "RemoveFriend", "Account", new { friendUserName = friend.UserName }, new { @class = "btn btn-sm btn-outline-danger mt-1" })
 			</td>
 		</tr>
 	}
 </table>
-
-<div id="userName" hidden="hidden">@User.Identity.Name</div>
-
-<script src="~/Scripts/jquery-3.6.0.min.js"></script>
-<script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
-<script src='~/signalr/js'></script>
-<script src="~/Scripts/util.js"></script>
 

@@ -1,4 +1,5 @@
-﻿using Chatto.Models;
+﻿using Chatto.BLL.DTO;
+using Chatto.Models;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Collections.Generic;
@@ -17,15 +18,47 @@ namespace Chatto.Hubs
 
 		public static void Static_SendNotification(string currentUser, string friendUserName, string message)
 		{
-			HubUser user = Users.Find(u => u.UserName == friendUserName);
+			var user = Users.Find(u => u.UserName == friendUserName);
 
 			if (user != null)
-				hubContext.Clients.Client(user.ConnectionId).showNotification(currentUser, message);
+				hubContext.Clients.Client(user.ConnectionId).showFriendNotification(currentUser, message);
+		}
+
+		public static void Static_LoadMessages(List<MessageDTO> messages, string currentUserName)
+		{
+			var user = Users.Find(u => u.UserName == currentUserName);
+
+			foreach (var msg in messages)
+			{
+				hubContext.Clients.Client(user.ConnectionId).addMessage(msg.Sender, msg.Recipient, msg.Message, msg.SendDateTime);
+			}
+		}
+
+		public static void Static_SendMessage(MessageDTO message, string userName)
+		{
+			var user = Users.Find(u => u.UserName == userName);
+
+			if (user != null)
+			{
+				hubContext.Clients.Client(user.ConnectionId).addMessage(message.Sender, message.Recipient, message.Message, message.SendDateTime);
+			}
+
+		}
+
+		public static void Static_SendMessageNotification(string friendUserName, string currentUserName)
+		{
+			var user = Users.Find(u => u.UserName == friendUserName);
+
+			if (user != null)
+			{
+				hubContext.Clients.Client(user.ConnectionId).showMessageNotification(currentUserName, "has sent you a message!");
+			}
+
 		}
 
 		public void Connect(string userName)
 		{
-			string id = Context.ConnectionId;
+			var id = Context.ConnectionId;
 			userName = Context.User.Identity.Name;
 
 			if (!Users.Any(u => u.ConnectionId == id))

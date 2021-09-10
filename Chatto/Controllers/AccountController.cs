@@ -17,6 +17,7 @@ namespace Chatto.Controllers
 	{
 		#region init
 
+		private readonly IMessageService _messageService;
 		private IUserService UserService
 		{
 			get
@@ -33,6 +34,11 @@ namespace Chatto.Controllers
 			}
 		}
 
+		public AccountController(IMessageService messageService)
+		{
+			_messageService = messageService;
+		}
+
 		#endregion
 
 		#region registration
@@ -46,7 +52,6 @@ namespace Chatto.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Register(RegisterModel registerModel)
 		{
-			//await SetInitialDataAsync();
 			if (ModelState.IsValid)
 			{
 				UserDTO userDTO = new UserDTO
@@ -264,6 +269,8 @@ namespace Chatto.Controllers
 			if (User.Identity.Name != confirmation)
 				return Redirect("/Shared/Error.cshtml");
 
+			_messageService.RemoveMessages(confirmation);
+
 			var operation = UserService.DeleteAccount(confirmation);
 
 			LogOut();
@@ -277,21 +284,6 @@ namespace Chatto.Controllers
 		#endregion
 
 		#region non-action methods
-
-		//private async Task SetInitialDataAsync()
-		//{
-		//	await UserService.SetInitialData(new BLL.DTO.UserDTO
-		//	{
-		//		Adress = "ADMINADRESS",
-		//		Age = 10,
-		//		UserName = "adminadmin",
-		//		Email = "ADMINEMAIL",
-		//		RealName = "ADMINREALNAME",
-		//		Gender = "ADMINGENDER",
-		//		Password = "123123",
-		//		Role = "admin"
-		//	}, new List<string> { "user", "admin" });
-		//}
 
 		private UserDTO GetUserData(string userName)
 		{

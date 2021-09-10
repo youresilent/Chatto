@@ -17,15 +17,17 @@ namespace Chatto.DAL.Repositories
 		private readonly ApplicationUserManager userManager;
 		private readonly ApplicationRoleManager roleManager;
 		private readonly IClientManager clientManager;
+		private readonly IMessageManager messageManager;
 
-		public IdentityUnitOfWork(string connectionString)
+		public IdentityUnitOfWork()
 		{
-			DataBase = new ApplicationContext(connectionString);
+			DataBase = new ApplicationContext();
 
 			userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(DataBase));
 			roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(DataBase));
 
 			clientManager = new ClientManager(DataBase);
+			messageManager = new MessageManager(DataBase);
 		}
 
 		public ApplicationUserManager UserManager { get { return userManager; } }
@@ -33,6 +35,8 @@ namespace Chatto.DAL.Repositories
 		public ApplicationRoleManager RoleManager { get { return roleManager; } }
 
 		public IClientManager ClientManager { get { return clientManager; } }
+
+		public IMessageManager MessageManager { get { return messageManager; } }
 
 		public void Dispose()
 		{
@@ -48,7 +52,9 @@ namespace Chatto.DAL.Repositories
 				{
 					userManager.Dispose();
 					roleManager.Dispose();
+
 					clientManager.Dispose();
+					messageManager.Dispose();
 				}
 
 				disposed = true;
