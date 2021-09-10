@@ -1,12 +1,9 @@
 ﻿using Chatto.DAL.EF;
 using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chatto.DAL.Repositories
 {

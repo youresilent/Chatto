@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Chatto.DAL.Entities
+﻿namespace Chatto.DAL.Entities
 {
 	public class ClientProfile
 	{

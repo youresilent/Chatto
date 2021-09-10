@@ -3,6 +3,5 @@
 namespace Chatto.DAL.Entities
 {
 	public class ApplicationRole : IdentityRole
-	{
-	}
+	{ }
 }
