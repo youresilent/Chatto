@@ -14,5 +14,7 @@ namespace Chatto.DAL.Interfaces
 		void Remove(ClientMessage message);
 
 		List<ClientMessage> GetMessages(string currentUserName, string friendUserName);
+
+		List<ClientMessage> GetMessagesForRemoval(string userName);
 	}
 }
