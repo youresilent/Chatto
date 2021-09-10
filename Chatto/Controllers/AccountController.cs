@@ -17,6 +17,7 @@ namespace Chatto.Controllers
 	{
 		#region init
 
+		private readonly IMessageService _messageService;
 		private IUserService UserService
 		{
 			get
@@ -31,6 +32,11 @@ namespace Chatto.Controllers
 			{
 				return HttpContext.GetOwinContext().Authentication;
 			}
+		}
+
+		public AccountController(IMessageService messageService)
+		{
+			_messageService = messageService;
 		}
 
 		#endregion
@@ -262,6 +268,8 @@ namespace Chatto.Controllers
 		{
 			if (User.Identity.Name != confirmation)
 				return Redirect("/Shared/Error.cshtml");
+
+			_messageService.RemoveMessages(confirmation);
 
 			var operation = UserService.DeleteAccount(confirmation);
 
