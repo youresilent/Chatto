@@ -1,11 +1,8 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Interfaces;
 using Chatto.Hubs;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Chatto.Controllers
