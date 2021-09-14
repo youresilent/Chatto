@@ -86,9 +86,6 @@
 
 	$.connection.hub.start().done(function () {
 
-		console.log('connected! ' + hubVar.connection.id);
-		console.log($('.friendUserName').val());
-
 		hubVar.server.connect($('.userName').val());
 
 		$("#Send").click(function () {
