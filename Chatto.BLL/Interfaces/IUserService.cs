@@ -17,6 +17,10 @@ namespace Chatto.BLL.Interfaces
 
 		List<UserDTO> GetAllUsers();
 
+		OperationDetails AddPendingFriend(string currentUser, string friendUserName);
+
+		OperationDetails RemovePendingFriend(string currentUser, string friendUserName);
+
 		OperationDetails AddFriend(string currentUser, string friendUserName);
 
 		OperationDetails RemoveFriend(string currentUser, string friendUserName);

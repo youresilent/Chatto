@@ -47,7 +47,18 @@ namespace Chatto.BLL.Services
 
 				await DataBase.UserManager.AddToRoleAsync(user.Id, userDTO.Role);
 
-				ClientProfile clientProfile = new ClientProfile { Adress = userDTO.Adress, Age = userDTO.Age, Gender = userDTO.Gender, Id = user.Id, RealName = userDTO.RealName, Friends = "" };
+				ClientProfile clientProfile = new ClientProfile 
+				{ 
+					Adress = userDTO.Adress, 
+					Age = userDTO.Age, 
+					Gender = userDTO.Gender, 
+					Id = user.Id, 
+					RealName = userDTO.RealName, 
+					Friends = "", 
+					PendingFriendsSent = "", 
+					PendingFriendsReceived = ""
+				};
+
 				DataBase.ClientManager.Create(clientProfile);
 
 				await DataBase.SaveAsync();
@@ -77,10 +88,63 @@ namespace Chatto.BLL.Services
 			return new OperationDetails(true, "Account deleted successfully!", "");
 		}
 
+		public OperationDetails AddPendingFriend(string currentUser, string friendUserName)
+		{
+			var user = DataBase.UserManager.FindByName(currentUser);
+			var friend = DataBase.UserManager.FindByName(friendUserName);
+
+			user.ClientProfile.PendingFriendsSent += friendUserName + ",";
+			friend.ClientProfile.PendingFriendsReceived += currentUser + ",";
+
+			var operation1 = DataBase.UserManager.Update(user);
+			var operation2 = DataBase.UserManager.Update(friend);
+
+			if (!operation1.Succeeded)
+				return new OperationDetails(false, "Error occured while adding pending friend! (operation1)", currentUser);
+
+			if (!operation2.Succeeded)
+				return new OperationDetails(false, "Error occured while adding pending friend! (operation2)", friendUserName);
+
+			return new OperationDetails(true, "Added friend successfully!", "");
+		}
+
+		public OperationDetails RemovePendingFriend(string currentUser, string friendUserName)
+		{
+			var user = DataBase.UserManager.FindByName(currentUser);
+			var friend = DataBase.UserManager.FindByName(friendUserName);
+
+			var userPendingFriendList = StringToList(user.ClientProfile.PendingFriendsReceived);
+			userPendingFriendList.Remove(friendUserName);
+
+			var otherFriendPendingList = StringToList(friend.ClientProfile.PendingFriendsSent);
+			otherFriendPendingList.Remove(currentUser);
+
+			user.ClientProfile.PendingFriendsReceived = ListToString(userPendingFriendList);
+			friend.ClientProfile.PendingFriendsSent = ListToString(otherFriendPendingList);
+
+			var operation1 = DataBase.UserManager.Update(user);
+			var operation2 = DataBase.UserManager.Update(friend);
+
+			if (!operation1.Succeeded)
+				return new OperationDetails(false, "Error occured while removing pending friend! (operation1)", currentUser);
+
+			if (!operation2.Succeeded)
+				return new OperationDetails(false, "Error occured while removing pending friend! (operation2)", friendUserName);
+
+			return new OperationDetails(true, "Removed pending friend successfully!", "");
+		}
+
 		public OperationDetails AddFriend(string currentUser, string friendUserName)
 		{
-			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
-			ApplicationUser friend = DataBase.UserManager.FindByName(friendUserName);
+			var user = DataBase.UserManager.FindByName(currentUser);
+			var friend = DataBase.UserManager.FindByName(friendUserName);
+
+			var removeOperation = RemovePendingFriend(currentUser, friendUserName);
+
+			if (!removeOperation.Succeeded)
+			{
+				return new OperationDetails(false, removeOperation.Message, removeOperation.Property);
+			}
 
 			user.ClientProfile.Friends += friendUserName + ",";
 			friend.ClientProfile.Friends += currentUser + ",";
@@ -99,8 +163,8 @@ namespace Chatto.BLL.Services
 
 		public OperationDetails RemoveFriend(string currentUser, string friendUserName)
 		{
-			ApplicationUser user = DataBase.UserManager.FindByName(currentUser);
-			ApplicationUser friend = DataBase.UserManager.FindByName(friendUserName);
+			var user = DataBase.UserManager.FindByName(currentUser);
+			var friend = DataBase.UserManager.FindByName(friendUserName);
 
 			var userFriendList = StringToList(user.ClientProfile.Friends);
 			userFriendList.Remove(friendUserName);
@@ -136,7 +200,9 @@ namespace Chatto.BLL.Services
 				Gender = tempUser.ClientProfile.Gender,
 				Age = tempUser.ClientProfile.Age,
 				RealName = tempUser.ClientProfile.RealName,
-				Friends = tempUser.ClientProfile.Friends
+				Friends = tempUser.ClientProfile.Friends,
+				PendingFriendsSent = tempUser.ClientProfile.PendingFriendsSent,
+				PendingFriendsReceived = tempUser.ClientProfile.PendingFriendsReceived
 			};
 
 			return user;
@@ -214,7 +280,13 @@ namespace Chatto.BLL.Services
 
 		public List<string> StringToList(string str)
 		{
-			List<string> outList = str.Split(',').ToList();
+			var outList = new List<string>();
+			if (str == null)
+			{
+				return outList;
+			}
+
+			outList = str.Split(',').ToList();
 
 			if (outList[outList.Count - 1] == "")
 				outList.RemoveAt(outList.Count - 1);
