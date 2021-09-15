@@ -1,5 +1,4 @@
 ﻿using Chatto.BLL.DTO;
-using Chatto.BLL.Infrastructure;
 using Chatto.BLL.Interfaces;
 using Chatto.Hubs;
 using Chatto.Models;
@@ -7,7 +6,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -55,7 +53,7 @@ namespace Chatto.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				UserDTO userDTO = new UserDTO
+				var userDTO = new UserDTO
 				{
 					UserName = registerModel.UserName,
 					Password = registerModel.Password,
@@ -67,12 +65,16 @@ namespace Chatto.Controllers
 					Role = "user"
 				};
 
-				OperationDetails operation = await UserService.Create(userDTO);
+				var operation = await UserService.Create(userDTO);
 
 				if (operation.Succeeded)
+				{
 					return RedirectToAction("LogIn");
+				}
 				else
+				{
 					ModelState.AddModelError(operation.Property, operation.Message);
+				}
 			}
 
 			return View(registerModel);
@@ -99,16 +101,18 @@ namespace Chatto.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				UserDTO userDTO = new UserDTO
+				var userDTO = new UserDTO
 				{
 					UserName = loginModel.UserName,
 					Password = loginModel.Password
 				};
 
-				ClaimsIdentity claims = await UserService.Authenticate(userDTO);
+				var claims = await UserService.Authenticate(userDTO);
 
 				if (claims == null)
+				{
 					ModelState.AddModelError("", "Wrong login/password input!");
+				}
 				else
 				{
 					AuthenticationManager.SignOut();
@@ -169,27 +173,37 @@ namespace Chatto.Controllers
 		public ActionResult ProfileEdit(UserDTO newUser)
 		{
 			if (string.IsNullOrWhiteSpace(newUser.Adress))
+			{
 				ModelState.AddModelError("Adress", "Adress is required!");
+			}
 
 			if (string.IsNullOrWhiteSpace(newUser.Email))
+			{
 				ModelState.AddModelError("Email", "E-mail adress is required!");
+			}
 
 			if (string.IsNullOrWhiteSpace(newUser.RealName))
+			{
 				ModelState.AddModelError("RealName", "Real name is required!");
-
+			}
+				
 			if (string.IsNullOrWhiteSpace(newUser.Gender))
+			{
 				ModelState.AddModelError("Gender", "Gender is required!");
+			}
 
 			if (newUser.Age < 5 || newUser.Age > 120)
-				ModelState.AddModelError("Age", "Age input is not correct! It must be between 5 and 120.");
-
-			if (ModelState.IsValid)
 			{
-				UserService.ChangeSecondaryInfo(newUser);
-				return RedirectToAction("Home");
+				ModelState.AddModelError("Age", "Age input is not correct! It must be between 5 and 120.");
 			}
-			else
+
+			if (!ModelState.IsValid)
+			{
 				return View(newUser);
+			}
+
+			UserService.ChangeSecondaryInfo(newUser);
+			return RedirectToAction("Home");
 		}
 
 		[Authorize]
@@ -205,13 +219,17 @@ namespace Chatto.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				UserDTO user = GetUserData(User.Identity.Name);
-				OperationDetails operation = UserService.ChangePassword(model.OldPassword, model.NewPassword, user.Id);
+				var user = GetUserData(User.Identity.Name);
+				var operation = UserService.ChangePassword(model.OldPassword, model.NewPassword, user.Id);
 
 				if (operation.Succeeded)
+				{
 					return RedirectToAction("Home");
+				}
 				else
+				{
 					ModelState.AddModelError(operation.Property, operation.Message);
+				}
 			}
 
 			return View(model);
@@ -241,9 +259,9 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ActionResult AddPendingFriend(string friendUserName)
 		{
-			string currentUserName = User.Identity.Name;
+			var currentUserName = User.Identity.Name;
 
-			OperationDetails operation = UserService.AddPendingFriend(currentUserName, friendUserName);
+			var operation = UserService.AddPendingFriend(currentUserName, friendUserName);
 
 			if (!operation.Succeeded)
 			{
@@ -257,9 +275,14 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ActionResult DeclineFriend(string friendUserName)
 		{
-			string currentUserName = User.Identity.Name;
+			var currentUserName = User.Identity.Name;
 
 			var operation = UserService.RemovePendingFriend(currentUserName, friendUserName);
+
+			if (!operation.Succeeded)
+			{
+				return RedirectToAction("Error");
+			}
 
 			return RedirectToAction("Home");
 		}
@@ -267,34 +290,33 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ActionResult AddFriend(string friendUserName)
 		{
-			string currentUserName = User.Identity.Name;
+			var currentUserName = User.Identity.Name;
 
-			OperationDetails operation = UserService.AddFriend(currentUserName, friendUserName);
+			var operation = UserService.AddFriend(currentUserName, friendUserName);
 
-			if (operation.Succeeded)
+			if (!operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_AddedSuccessfullyNotification);
-				return RedirectToAction("Home");
-			}
-			else
 				return RedirectToAction("Error");
+			}
+
+			SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_AddedSuccessfullyNotification);
+			return RedirectToAction("Home");
 		}
 
 		[Authorize]
 		public ActionResult RemoveFriend(string friendUserName)
 		{
-			string currentUserName = User.Identity.Name;
+			var currentUserName = User.Identity.Name;
 
-			OperationDetails operation = UserService.RemoveFriend(currentUserName, friendUserName);
+			var operation = UserService.RemoveFriend(currentUserName, friendUserName);
 
-			if (operation.Succeeded)
+			if (!operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_RemovedSuccessfullyNotification);
-				return RedirectToAction("Home");
-			}
-			else
 				return RedirectToAction("Error");
+			}
 
+			SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_RemovedSuccessfullyNotification);
+			return RedirectToAction("Home");
 		}
 
 		[Authorize]
@@ -308,7 +330,9 @@ namespace Chatto.Controllers
 		public ActionResult DeleteAccount(string confirmation)
 		{
 			if (User.Identity.Name != confirmation)
+			{
 				return RedirectToAction("Error");
+			}
 
 			_messageService.RemoveMessages(confirmation);
 
@@ -317,7 +341,9 @@ namespace Chatto.Controllers
 			LogOut();
 
 			if (!operation.Succeeded)
+			{
 				return RedirectToAction("Error");
+			}
 
 			return RedirectToAction("Index", "Home");
 		}
@@ -336,10 +362,12 @@ namespace Chatto.Controllers
 			var user = GetUserData(User.Identity.Name);
 			var friends = StringToList(user.Friends);
 
-			List<UserDTO> friendsDTOs = new List<UserDTO>();
+			var friendsDTOs = new List<UserDTO>();
 
 			foreach (var friend in friends)
+			{
 				friendsDTOs.Add(GetUserData(friend.UserName));
+			}
 
 			return friendsDTOs;
 		}
@@ -368,8 +396,8 @@ namespace Chatto.Controllers
 
 		private List<UserDTO> StringToList(string friendsList)
 		{
-			List<string> stringList = UserService.StringToList(friendsList);
-			List<UserDTO> users = new List<UserDTO>();
+			var stringList = UserService.StringToList(friendsList);
+			var users = new List<UserDTO>();
 
 			foreach (var user in stringList)
 			{
