@@ -22,7 +22,7 @@ namespace Chatto {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class StringsResource {
+    internal class StringsResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Chatto {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chatto.StringsResource", typeof(StringsResource).Assembly);
@@ -51,7 +51,7 @@ namespace Chatto {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to has added you to their friendslist! Refreshing page....
         /// </summary>
-        public static string Friend_AddedSuccessfullyNotification {
+        internal static string Friend_AddedSuccessfullyNotification {
             get {
                 return ResourceManager.GetString("Friend_AddedSuccessfullyNotification", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to wants you to be their friend! Refreshing page....
         /// </summary>
-        public static string Friend_PendingNotification {
+        internal static string Friend_PendingNotification {
             get {
                 return ResourceManager.GetString("Friend_PendingNotification", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to has removed you from their friendslist! Refreshing page....
         /// </summary>
-        public static string Friend_RemovedSuccessfullyNotification {
+        internal static string Friend_RemovedSuccessfullyNotification {
             get {
                 return ResourceManager.GetString("Friend_RemovedSuccessfullyNotification", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to has sent you a message!.
         /// </summary>
-        public static string Message_ReceivedNotification {
+        internal static string Message_ReceivedNotification {
             get {
                 return ResourceManager.GetString("Message_ReceivedNotification", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to Message was not sent!.
         /// </summary>
-        public static string Message_SendError {
+        internal static string Message_SendError {
             get {
                 return ResourceManager.GetString("Message_SendError", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to Message sent successfully!.
         /// </summary>
-        public static string Message_SentOK {
+        internal static string Message_SentOK {
             get {
                 return ResourceManager.GetString("Message_SentOK", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to Age input is not correct! It must be between 5 and 120..
         /// </summary>
-        public static string Validation_AgeError {
+        internal static string Validation_AgeError {
             get {
                 return ResourceManager.GetString("Validation_AgeError", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to Adress is required!.
         /// </summary>
-        public static string Validation_EmptyAdressError {
+        internal static string Validation_EmptyAdressError {
             get {
                 return ResourceManager.GetString("Validation_EmptyAdressError", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to E-mail adress is required!.
         /// </summary>
-        public static string Validation_EmptyEmailError {
+        internal static string Validation_EmptyEmailError {
             get {
                 return ResourceManager.GetString("Validation_EmptyEmailError", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Chatto {
         /// <summary>
         ///   Looks up a localized string similar to Real name is required!.
         /// </summary>
-        public static string Validation_EmptyRealNameError {
+        internal static string Validation_EmptyRealNameError {
             get {
                 return ResourceManager.GetString("Validation_EmptyRealNameError", resourceCulture);
             }
