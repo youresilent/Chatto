@@ -129,4 +129,22 @@
   <data name="Message_ReceivedNotification" xml:space="preserve">
     <value>has sent you a message!</value>
   </data>
+  <data name="Message_SendError" xml:space="preserve">
+    <value>Message was not sent!</value>
+  </data>
+  <data name="Message_SentOK" xml:space="preserve">
+    <value>Message sent successfully!</value>
+  </data>
+  <data name="Validation_AgeError" xml:space="preserve">
+    <value>Age input is not correct! It must be between 5 and 120.</value>
+  </data>
+  <data name="Validation_EmptyAdressError" xml:space="preserve">
+    <value>Adress is required!</value>
+  </data>
+  <data name="Validation_EmptyEmailError" xml:space="preserve">
+    <value>E-mail adress is required!</value>
+  </data>
+  <data name="Validation_EmptyRealNameError" xml:space="preserve">
+    <value>Real name is required!</value>
+  </data>
 </root>

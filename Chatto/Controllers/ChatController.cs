@@ -35,7 +35,7 @@ namespace Chatto.Controllers
 				return RedirectToAction("Error");
 			}
 
-			List<MessageDTO> messages = _messageService.GetMessages(User.Identity.Name, friendUserName);
+			var messages = _messageService.GetMessages(User.Identity.Name, friendUserName);
 			ViewBag.FriendUserName = friendUserName;
 
 			return View(messages);
@@ -56,11 +56,11 @@ namespace Chatto.Controllers
 
 				SignalHub.Static_SendMessageNotification(friendUserName, currentUserName);
 
-				return Content("Message sent successfully!");
+				return Content(StringsResource.Message_SentOK);
 			}
 			else
 			{
-				return Content("Message was not sent!");
+				return Content(StringsResource.Message_SendError);
 			}
 
 		}
@@ -75,18 +75,20 @@ namespace Chatto.Controllers
 			var user = UserService.GetUserData(User.Identity.Name);
 			var friends = StringToList(user.Friends);
 
-			List<UserDTO> friendsDTOs = new List<UserDTO>();
+			var friendsDTOs = new List<UserDTO>();
 
 			foreach (var friend in friends)
+			{
 				friendsDTOs.Add(UserService.GetUserData(friend.UserName));
+			}
 
 			return friendsDTOs;
 		}
 
 		private List<UserDTO> StringToList(string friendsList)
 		{
-			List<string> stringList = UserService.StringToList(friendsList);
-			List<UserDTO> users = new List<UserDTO>();
+			var stringList = UserService.StringToList(friendsList);
+			var users = new List<UserDTO>();
 
 			foreach (var user in stringList)
 			{
@@ -98,7 +100,7 @@ namespace Chatto.Controllers
 
 		private MessageDTO GetMessageDTO(string sender, string recipient, string message, DateTime sendDateTime)
 		{
-			MessageDTO messageDTO = new MessageDTO
+			var messageDTO = new MessageDTO
 			{
 				Sender = sender,
 				Recipient = recipient,

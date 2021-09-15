@@ -95,5 +95,59 @@ namespace Chatto {
                 return ResourceManager.GetString("Message_ReceivedNotification", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message was not sent!.
+        /// </summary>
+        public static string Message_SendError {
+            get {
+                return ResourceManager.GetString("Message_SendError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message sent successfully!.
+        /// </summary>
+        public static string Message_SentOK {
+            get {
+                return ResourceManager.GetString("Message_SentOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age input is not correct! It must be between 5 and 120..
+        /// </summary>
+        public static string Validation_AgeError {
+            get {
+                return ResourceManager.GetString("Validation_AgeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adress is required!.
+        /// </summary>
+        public static string Validation_EmptyAdressError {
+            get {
+                return ResourceManager.GetString("Validation_EmptyAdressError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E-mail adress is required!.
+        /// </summary>
+        public static string Validation_EmptyEmailError {
+            get {
+                return ResourceManager.GetString("Validation_EmptyEmailError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Real name is required!.
+        /// </summary>
+        public static string Validation_EmptyRealNameError {
+            get {
+                return ResourceManager.GetString("Validation_EmptyRealNameError", resourceCulture);
+            }
+        }
     }
 }

@@ -172,29 +172,19 @@ namespace Chatto.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult ProfileEdit(UserDTO newUser)
 		{
-			if (string.IsNullOrWhiteSpace(newUser.Adress))
-			{
-				ModelState.AddModelError("Adress", "Adress is required!");
-			}
-
 			if (string.IsNullOrWhiteSpace(newUser.Email))
 			{
-				ModelState.AddModelError("Email", "E-mail adress is required!");
+				ModelState.AddModelError("Email", StringsResource.Validation_EmptyEmailError);
 			}
 
 			if (string.IsNullOrWhiteSpace(newUser.RealName))
 			{
-				ModelState.AddModelError("RealName", "Real name is required!");
-			}
-				
-			if (string.IsNullOrWhiteSpace(newUser.Gender))
-			{
-				ModelState.AddModelError("Gender", "Gender is required!");
+				ModelState.AddModelError("RealName", StringsResource.Validation_EmptyRealNameError);
 			}
 
 			if (newUser.Age < 5 || newUser.Age > 120)
 			{
-				ModelState.AddModelError("Age", "Age input is not correct! It must be between 5 and 120.");
+				ModelState.AddModelError("Age", StringsResource.Validation_AgeError);
 			}
 
 			if (!ModelState.IsValid)
@@ -268,7 +258,7 @@ namespace Chatto.Controllers
 				return RedirectToAction("Error");
 			}
 
-			SignalHub.Static_SendNotification(currentUserName, friendUserName, "test");
+			SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_PendingNotification);
 			return RedirectToAction("Home");
 		}
 
