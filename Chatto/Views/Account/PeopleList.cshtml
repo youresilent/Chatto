@@ -1,4 +1,4 @@
-﻿@model Chatto.BLL.DTO.UserDTO
+﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<string>, List<string>, List<Chatto.BLL.DTO.UserDTO>>
 @{
 	ViewBag.Title = "Users list";
 }
@@ -6,7 +6,7 @@
 <h2 class="display-2">Registered users</h2>
 
 <table class="table table-hover table-borderless col-md-4">
-	@foreach (var user in ViewBag.Users)
+	@foreach (var user in Model.Item4)
 	{
 		if (user.UserName != User.Identity.Name)
 		{
@@ -16,15 +16,22 @@
 					<div class="text-black-50">@user.Email</div>
 				</td>
 
-				@if (!Model.Friends.Contains(user.UserName))
-				{
-					<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
-				}
-				else
+				@if (Model.Item1.Select(m => m.UserName == user.UserName).FirstOrDefault())
 				{
 					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
 				}
-
+				else if (Model.Item2.Contains(user.UserName))
+				{
+					<td>Confirm friendship on home screen!</td>
+				}
+				else if (Model.Item3.Contains(user.UserName))
+				{
+					<td>Waiting for approval</td>
+				}
+				else
+				{ 
+					<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddPendingFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
+				}
 			</tr>
 		}
 	}

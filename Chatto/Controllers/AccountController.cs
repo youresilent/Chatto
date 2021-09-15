@@ -5,6 +5,7 @@ using Chatto.Hubs;
 using Chatto.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,11 +17,6 @@ namespace Chatto.Controllers
 	public class AccountController : Controller
 	{
 		#region init
-
-		private string[] statusStrings = new string[] {
-			"has added you to their friendslist! Refreshing page...",
-			"has removed you from their friendslist! Refreshing page..."
-		};
 
 		private readonly IMessageService _messageService;
 		private IUserService UserService
@@ -136,10 +132,19 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult Home()
 		{
-			UserDTO user = GetUserData(User.Identity.Name);
-			ViewBag.Friends = GetUserFriends();
+			var userFriends = GetUserFriends();
+			var pendingFriends = GetUserPendingFriends();
 
-			return View(user);
+			var pendingFriendsIncoming = pendingFriends.Item1;
+
+			ViewBag.CurrentUser = GetUserData(User.Identity.Name);
+
+			return View(Tuple.Create(userFriends, pendingFriendsIncoming));
+		}
+
+		public ViewResult Error()
+		{
+			return View();
 		}
 
 		#endregion
@@ -215,9 +220,14 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult PeopleList()
 		{
-			ViewBag.Users = UserService.GetAllUsers();
+			var allUsers = UserService.GetAllUsers();
+			var userFriends = GetUserFriends();
+			var pendingFriends = GetUserPendingFriends();
 
-			return View(GetUserData(User.Identity.Name));
+			var pendingFriendsIncoming = pendingFriends.Item1;
+			var pendingFriendsOutgoing = pendingFriends.Item2;
+
+			return View(Tuple.Create(userFriends, pendingFriendsIncoming, pendingFriendsOutgoing, allUsers));
 		}
 
 		[Authorize]
@@ -229,6 +239,32 @@ namespace Chatto.Controllers
 		}
 
 		[Authorize]
+		public ActionResult AddPendingFriend(string friendUserName)
+		{
+			string currentUserName = User.Identity.Name;
+
+			OperationDetails operation = UserService.AddPendingFriend(currentUserName, friendUserName);
+
+			if (!operation.Succeeded)
+			{
+				return RedirectToAction("Error");
+			}
+
+			SignalHub.Static_SendNotification(currentUserName, friendUserName, "test");
+			return RedirectToAction("Home");
+		}
+
+		[Authorize]
+		public ActionResult DeclineFriend(string friendUserName)
+		{
+			string currentUserName = User.Identity.Name;
+
+			var operation = UserService.RemovePendingFriend(currentUserName, friendUserName);
+
+			return RedirectToAction("Home");
+		}
+
+		[Authorize]
 		public ActionResult AddFriend(string friendUserName)
 		{
 			string currentUserName = User.Identity.Name;
@@ -237,11 +273,11 @@ namespace Chatto.Controllers
 
 			if (operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, statusStrings[0]);
+				SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_AddedSuccessfullyNotification);
 				return RedirectToAction("Home");
 			}
 			else
-				return Redirect("/Shared/Error.cshtml");
+				return RedirectToAction("Error");
 		}
 
 		[Authorize]
@@ -249,15 +285,15 @@ namespace Chatto.Controllers
 		{
 			string currentUserName = User.Identity.Name;
 
-			OperationDetails operation = UserService.RemoveFriend(User.Identity.Name, friendUserName);
+			OperationDetails operation = UserService.RemoveFriend(currentUserName, friendUserName);
 
 			if (operation.Succeeded)
 			{
-				SignalHub.Static_SendNotification(currentUserName, friendUserName, statusStrings[1]);
+				SignalHub.Static_SendNotification(currentUserName, friendUserName, StringsResource.Friend_RemovedSuccessfullyNotification);
 				return RedirectToAction("Home");
 			}
 			else
-				return Redirect("/Shared/Error.cshtml");
+				return RedirectToAction("Error");
 
 		}
 
@@ -272,7 +308,7 @@ namespace Chatto.Controllers
 		public ActionResult DeleteAccount(string confirmation)
 		{
 			if (User.Identity.Name != confirmation)
-				return Redirect("/Shared/Error.cshtml");
+				return RedirectToAction("Error");
 
 			_messageService.RemoveMessages(confirmation);
 
@@ -281,7 +317,7 @@ namespace Chatto.Controllers
 			LogOut();
 
 			if (!operation.Succeeded)
-				return Redirect("/Shared/Error.cshtml");
+				return RedirectToAction("Error");
 
 			return RedirectToAction("Index", "Home");
 		}
@@ -306,6 +342,28 @@ namespace Chatto.Controllers
 				friendsDTOs.Add(GetUserData(friend.UserName));
 
 			return friendsDTOs;
+		}
+
+		private (List<string>, List<string>) GetUserPendingFriends()
+		{
+			var user = GetUserData(User.Identity.Name);
+			var pendingFriendsReceivedList = StringToList(user.PendingFriendsReceived);
+			var pendingFriendsSentList = StringToList(user.PendingFriendsSent);
+
+			var pendingFriendsIncomingList = new List<string>();
+			var pendingFriendsOutgoingList = new List<string>();
+
+			foreach (var friend in pendingFriendsReceivedList)
+			{
+				pendingFriendsIncomingList.Add(friend.UserName);
+			}
+
+			foreach (var friend in pendingFriendsSentList)
+			{
+				pendingFriendsOutgoingList.Add(friend.UserName);
+			}
+
+			return (pendingFriendsIncomingList, pendingFriendsOutgoingList);
 		}
 
 		private List<UserDTO> StringToList(string friendsList)
