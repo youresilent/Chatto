@@ -1,8 +1,10 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Interfaces;
 using Chatto.Hubs;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Chatto.Controllers
@@ -16,9 +18,24 @@ namespace Chatto.Controllers
 			_messageService = messageService;
 		}
 
+		private IUserService UserService
+		{
+			get
+			{
+				return HttpContext.GetOwinContext().GetUserManager<IUserService>();
+			}
+		}
+
 		public ActionResult ChatRoom(string friendUserName)
 		{
-			List<MessageDTO> messages = _messageService.GetMessages(User.Identity.Name, friendUserName);
+			var currentUserFriends = GetUserFriends();
+
+			if (currentUserFriends.Find(u => u.UserName == friendUserName) == null)
+			{
+				return RedirectToAction("Error");
+			}
+
+			var messages = _messageService.GetMessages(User.Identity.Name, friendUserName);
 			ViewBag.FriendUserName = friendUserName;
 
 			return View(messages);
@@ -39,18 +56,51 @@ namespace Chatto.Controllers
 
 				SignalHub.Static_SendMessageNotification(friendUserName, currentUserName);
 
-				return Content("Message sent successfully!");
+				return Content(StringsResource.Message_SentOK);
 			}
 			else
 			{
-				return Content("Message was not sent!");
+				return Content(StringsResource.Message_SendError);
 			}
 
 		}
 
+		public ViewResult Error()
+		{
+			return View();
+		}
+
+		private List<UserDTO> GetUserFriends()
+		{
+			var user = UserService.GetUserData(User.Identity.Name);
+			var friends = StringToList(user.Friends);
+
+			var friendsDTOs = new List<UserDTO>();
+
+			foreach (var friend in friends)
+			{
+				friendsDTOs.Add(UserService.GetUserData(friend.UserName));
+			}
+
+			return friendsDTOs;
+		}
+
+		private List<UserDTO> StringToList(string friendsList)
+		{
+			var stringList = UserService.StringToList(friendsList);
+			var users = new List<UserDTO>();
+
+			foreach (var user in stringList)
+			{
+				users.Add(UserService.GetUserData(user));
+			}
+
+			return users;
+		}
+
 		private MessageDTO GetMessageDTO(string sender, string recipient, string message, DateTime sendDateTime)
 		{
-			MessageDTO messageDTO = new MessageDTO
+			var messageDTO = new MessageDTO
 			{
 				Sender = sender,
 				Recipient = recipient,

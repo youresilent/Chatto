@@ -26,10 +26,10 @@ namespace Chatto.BLL.Services
 			}
 			catch
 			{
-				return new OperationDetails(false, "Message was not saved! SOS", "messageDTO");
+				return new OperationDetails(false, StatusStringsResource.CreateMessage_Failure, "messageDTO");
 			}
 
-			return new OperationDetails(true, "Message was saved successfully!", "");
+			return new OperationDetails(true, StatusStringsResource.CreateMessage_OK, "");
 		}
 
 		public async Task<OperationDetails> Remove(MessageDTO messageDTO)
@@ -41,10 +41,10 @@ namespace Chatto.BLL.Services
 			}
 			catch
 			{
-				return new OperationDetails(false, "Message was not removed! :/", "messageDTO");
+				return new OperationDetails(false, StatusStringsResource.RemoveMessage_Failure, "messageDTO");
 			}
 
-			return new OperationDetails(true, "Message was removed!", "");
+			return new OperationDetails(true, StatusStringsResource.RemoveMessage_OK, "");
 		}
 
 		public List<MessageDTO> GetMessages(string currentUserName, string friendUserName)
@@ -75,7 +75,7 @@ namespace Chatto.BLL.Services
 
 		private ClientMessage GetClientMessage(MessageDTO messageDTO)
 		{
-			ClientMessage clientMessage = new ClientMessage
+			var clientMessage = new ClientMessage
 			{
 				Id = messageDTO.Id,
 				Sender = messageDTO.Sender,
@@ -89,7 +89,7 @@ namespace Chatto.BLL.Services
 
 		private MessageDTO GetMessageDTO(ClientMessage clientMessage)
 		{
-			MessageDTO messageDTO = new MessageDTO
+			var messageDTO = new MessageDTO
 			{
 				Id = clientMessage.Id,
 				Sender = clientMessage.Sender,

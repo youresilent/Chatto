@@ -11,6 +11,10 @@
 
 		public string Friends { get; set; }
 
+		public string PendingFriendsSent { get; set; }
+
+		public string PendingFriendsReceived { get; set; }
+
 		public virtual ApplicationUser ApplicationUser { get; set; }
 	}
 }

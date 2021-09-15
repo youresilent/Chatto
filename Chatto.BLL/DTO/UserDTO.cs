@@ -27,6 +27,10 @@ namespace Chatto.BLL.DTO
 
 		public string Friends { get; set; }
 
+		public string PendingFriendsSent { get; set; }
+
+		public string PendingFriendsReceived { get; set; }
+
 		public string Role { get; set; }
 	}
 }

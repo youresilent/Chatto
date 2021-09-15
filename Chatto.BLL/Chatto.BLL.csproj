@@ -118,6 +118,11 @@
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="StatusStringsResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatusStringsResource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -128,6 +133,12 @@
       <Project>{31976963-ee78-47f4-b6f8-7d351b9c300d}</Project>
       <Name>Chatto.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StatusStringsResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StatusStringsResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

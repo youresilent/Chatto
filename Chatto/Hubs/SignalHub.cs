@@ -5,7 +5,6 @@ using Microsoft.AspNet.SignalR.Hubs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Chatto.Hubs
 {
@@ -51,7 +50,7 @@ namespace Chatto.Hubs
 
 			if (user != null)
 			{
-				hubContext.Clients.Client(user.ConnectionId).showMessageNotification(currentUserName, "has sent you a message!");
+				hubContext.Clients.Client(user.ConnectionId).showMessageNotification(currentUserName, StringsResource.Message_ReceivedNotification);
 			}
 
 		}

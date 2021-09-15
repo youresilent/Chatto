@@ -1,4 +1,4 @@
-﻿@model Chatto.BLL.DTO.UserDTO
+﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<string>>
 @{
 	ViewBag.Title = "My profile";
 	int i = 0;
@@ -13,33 +13,33 @@
 		<p>
 			<table class="table table-borderless">
 				<tr>
-					<td><em>@Html.LabelFor(m => m.UserName)</em></td>
-					<td>@Html.DisplayFor(m => m.UserName)</td>
+					<td><em>User Name</em></td>
+					<td>@ViewBag.CurrentUser.UserName</td>
 				</tr>
 				<tr>
-					<td><em>@Html.LabelFor(m => m.RealName)</em></td>
-					<td>@Html.DisplayFor(m => m.RealName)</td>
+					<td><em>Real Name</em></td>
+					<td>@ViewBag.CurrentUser.RealName</td>
 				</tr>
 				<tr>
-					<td><em>@Html.LabelFor(m => m.Email)</em></td>
-					<td>@Html.DisplayFor(m => m.Email)</td>
+					<td><em>E-mail</em></td>
+					<td>@ViewBag.CurrentUser.Email</td>
 				</tr>
 			</table>
 		</p>
-		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = Model.UserName }, new { @class = "btn btn-sm btn-outline-warning container-fluid" })
+		@Html.ActionLink("More info", "ProfileInfo", "Account", new { userName = ViewBag.CurrentUser.UserName }, new { @class = "btn btn-sm btn-outline-warning container-fluid" })
 	</div>
 
 	<div class="col-md-4 mb-5">
 		<h3 class="display-6">My friends</h3>
 		<p>
 			<table class="table table-borderless table-hover">
-				@if (ViewBag.Friends.Count == 0)
+				@if (Model.Item1.Count == 0)
 				{
 					<tr>
 						<td>You haven't friended anyone... :(</td>
 					</tr>
 				}
-				@foreach (var friend in ViewBag.Friends)
+				@foreach (var friend in Model.Item1)
 				{
 					if (i == 3)
 					{
@@ -50,7 +50,14 @@
 						<td>
 							<em>@friend.UserName (@friend.RealName)</em>
 						</td>
-						<td style="text-align: right">@Html.ActionLink("Chat", "ChatRoom", "Chat", new { friendUserName = friend.UserName }, null)</td>
+						@if (Model.Item2.Contains(friend.UserName))
+						{
+							<td style="text-align: right">waiting!</td>
+						}
+						else
+						{
+							<td style="text-align: right">@Html.ActionLink("Chat", "ChatRoom", "Chat", new { friendUserName = friend.UserName }, null)</td>
+						}
 					</tr>
 					i = i + 1;
 				}
@@ -58,7 +65,7 @@
 		</p>
 		<div class="row">
 			<div class="col">
-				@if (ViewBag.Friends.Count == 0)
+				@if (Model.Item1.Count == 0)
 				{
 					@Html.ActionLink("All friends", "FriendsList", "Account", new { @class = "btn btn-sm btn-outline-info container-fluid disabled" })
 				}
@@ -81,4 +88,18 @@
 			@Html.ActionLink("Delete account", "DeleteAccount", "Account", new { @class = "btn btn-sm btn-outline-danger mt-1" })
 		</div>
 	</div>
+
+	@if (Model.Item2.Count > 0)
+	{
+		<div class="display-6">Notifications</div>
+		<div class="jumbotron">
+			@foreach (var pendingFriend in Model.Item2)
+			{
+				<div>
+					<b>New friend: </b>@pendingFriend - @Html.ActionLink("Accept", "AddFriend", "Account", new { friendUserName = pendingFriend },
+					 new { @class = "" }) or @Html.ActionLink("Decline", "DeclineFriend", "Account", new { friendUserName = pendingFriend }, new { @class = "" })
+				</div>
+			}
+		</div>
+	}
 </div>
