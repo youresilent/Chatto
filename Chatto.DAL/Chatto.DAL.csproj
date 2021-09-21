@@ -61,6 +61,7 @@
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\ClientMessage.cs" />
+    <Compile Include="Entities\ClientPendingFriend.cs" />
     <Compile Include="Entities\ClientProfile.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
@@ -74,14 +75,6 @@
     <Compile Include="Migrations\202109020903591_MessageIdToInt.cs" />
     <Compile Include="Migrations\202109020903591_MessageIdToInt.designer.cs">
       <DependentUpon>202109020903591_MessageIdToInt.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202109141901234_PendingFriendsString.cs" />
-    <Compile Include="Migrations\202109141901234_PendingFriendsString.designer.cs">
-      <DependentUpon>202109141901234_PendingFriendsString.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202109151007310_PendingFriendsReceiveSendStrings.cs" />
-    <Compile Include="Migrations\202109151007310_PendingFriendsReceiveSendStrings.designer.cs">
-      <DependentUpon>202109151007310_PendingFriendsReceiveSendStrings.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,12 +92,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109020903591_MessageIdToInt.resx">
       <DependentUpon>202109020903591_MessageIdToInt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202109141901234_PendingFriendsString.resx">
-      <DependentUpon>202109141901234_PendingFriendsString.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202109151007310_PendingFriendsReceiveSendStrings.resx">
-      <DependentUpon>202109151007310_PendingFriendsReceiveSendStrings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

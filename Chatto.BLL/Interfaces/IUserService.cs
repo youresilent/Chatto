@@ -1,5 +1,6 @@
 ﻿using Chatto.BLL.DTO;
 using Chatto.BLL.Infrastructure;
+using Chatto.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -13,13 +14,15 @@ namespace Chatto.BLL.Interfaces
 		Task<ClaimsIdentity> Authenticate(UserDTO userDTO);
 		Task SetInitialData(UserDTO adminDTO, List<string> roles);
 
-		UserDTO GetUserData(string userName);
+		UserDTO GetUserData(string userName, bool isId = false);
 
 		List<UserDTO> GetAllUsers();
 
 		OperationDetails AddPendingFriend(string currentUser, string friendUserName);
 
 		OperationDetails RemovePendingFriend(string currentUser, string friendUserName);
+
+		List<string> GetPendingFriends(string userName, bool isIncoming = true);
 
 		OperationDetails AddFriend(string currentUser, string friendUserName);
 
