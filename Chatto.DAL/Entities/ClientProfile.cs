@@ -1,4 +1,6 @@
-﻿namespace Chatto.DAL.Entities
+﻿using System.Collections.Generic;
+
+namespace Chatto.DAL.Entities
 {
 	public class ClientProfile
 	{
@@ -11,10 +13,13 @@
 
 		public string Friends { get; set; }
 
-		public string PendingFriendsSent { get; set; }
-
-		public string PendingFriendsReceived { get; set; }
-
 		public virtual ApplicationUser ApplicationUser { get; set; }
+
+		public virtual ICollection<ClientPendingFriend> ClientPendingFriends { get; set; }
+
+		public ClientProfile()
+		{
+			ClientPendingFriends = new HashSet<ClientPendingFriend>();
+		}
 	}
 }
