@@ -60,8 +60,6 @@ namespace Chatto.BLL.Services
 					Id = user.Id,
 					RealName = userDTO.RealName,
 					Friends = "",
-					PendingFriendsSent = "",
-					PendingFriendsReceived = ""
 				};
 
 				DataBase.ClientManager.Create(clientProfile);
@@ -103,18 +101,17 @@ namespace Chatto.BLL.Services
 			var user = DataBase.UserManager.FindByName(currentUser);
 			var friend = DataBase.UserManager.FindByName(friendUserName);
 
-			user.ClientProfile.PendingFriendsSent += friendUserName + ",";
-			friend.ClientProfile.PendingFriendsReceived += currentUser + ",";
-
-			var operation1 = DataBase.UserManager.Update(user);
-			var operation2 = DataBase.UserManager.Update(friend);
-
-			if (!operation1.Succeeded)
+			var clientPendingFriend = new ClientPendingFriend
 			{
-				return new OperationDetails(false, StatusStringsResource.AddPendingFriend_FailureOP1, currentUser);
-			}
+				Id_Sender = user.Id,
+				Id_Receiver = friend.Id,
+			};
 
-			if (!operation2.Succeeded)
+			friend.ClientProfile.ClientPendingFriends.Add(clientPendingFriend);
+
+			var operation = DataBase.UserManager.Update(friend);
+
+			if (!operation.Succeeded)
 			{
 				return new OperationDetails(false, StatusStringsResource.AddPendingFriend_FailureOP2, friendUserName);
 			}
@@ -127,29 +124,41 @@ namespace Chatto.BLL.Services
 			var user = DataBase.UserManager.FindByName(currentUser);
 			var friend = DataBase.UserManager.FindByName(friendUserName);
 
-			var userPendingFriendList = StringToList(user.ClientProfile.PendingFriendsReceived);
-			userPendingFriendList.Remove(friendUserName);
+			var tableRecord = user.ClientProfile.ClientPendingFriends
+				.Where(w => w.Id_Sender == friend.Id && w.Id_Receiver == user.Id)
+				.SingleOrDefault();
 
-			var otherFriendPendingList = StringToList(friend.ClientProfile.PendingFriendsSent);
-			otherFriendPendingList.Remove(currentUser);
-
-			user.ClientProfile.PendingFriendsReceived = ListToString(userPendingFriendList);
-			friend.ClientProfile.PendingFriendsSent = ListToString(otherFriendPendingList);
+			DataBase.ClientManager.RemovePendingFriend(tableRecord);
 
 			var operation1 = DataBase.UserManager.Update(user);
-			var operation2 = DataBase.UserManager.Update(friend);
 
 			if (!operation1.Succeeded)
 			{
 				return new OperationDetails(false, StatusStringsResource.RemovePendingFriend_FailureOP1, currentUser);
 			}
 
-			if (!operation2.Succeeded)
-			{
-				return new OperationDetails(false, StatusStringsResource.RemovePendingFriend_FailureOP2, friendUserName);
-			}
-
 			return new OperationDetails(true, StatusStringsResource.RemovePendingFriend_OK, "");
+		}
+
+		public List<string> GetPendingFriends(string userName, bool isIncoming = true)
+		{
+			var user = DataBase.UserManager.FindByName(userName);
+
+			var zxc = new List<string>();
+
+			if (isIncoming)
+			{
+				foreach (var item in user.ClientProfile.ClientPendingFriends.ToList())
+				{
+					zxc.Add(item.Id_Sender);
+				}
+			}
+			else
+			{
+				zxc = DataBase.ClientManager.GetOutgoingPendingFriends(user.Id);
+			}
+			
+			return zxc;
 		}
 
 		public OperationDetails AddFriend(string currentUser, string friendUserName)
@@ -213,9 +222,18 @@ namespace Chatto.BLL.Services
 			return new OperationDetails(true, StatusStringsResource.RemoveFriend_OK, "");
 		}
 
-		public UserDTO GetUserData(string userName)
+		public UserDTO GetUserData(string userName, bool isId = false)
 		{
-			var tempUser = DataBase.UserManager.FindByName(userName);
+			ApplicationUser tempUser;
+
+			if (isId)
+			{
+				tempUser = DataBase.UserManager.FindById(userName);
+			}
+			else
+			{
+				tempUser = DataBase.UserManager.FindByName(userName);
+			}
 
 			var user = new UserDTO
 			{
@@ -227,8 +245,6 @@ namespace Chatto.BLL.Services
 				Age = tempUser.ClientProfile.Age,
 				RealName = tempUser.ClientProfile.RealName,
 				Friends = tempUser.ClientProfile.Friends,
-				PendingFriendsSent = tempUser.ClientProfile.PendingFriendsSent,
-				PendingFriendsReceived = tempUser.ClientProfile.PendingFriendsReceived
 			};
 
 			return user;
