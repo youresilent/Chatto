@@ -139,11 +139,16 @@ namespace Chatto.Controllers
 			var userFriends = GetUserFriends();
 			var pendingFriends = GetUserPendingFriends();
 
-			var pendingFriendsIncoming = pendingFriends.Item1;
+			var pendingFriendsIncomingList = new List<string>();
+
+			foreach (var item in pendingFriends)
+			{
+				pendingFriendsIncomingList.Add(GetUserData(item, true).UserName);
+			}
 
 			ViewBag.CurrentUser = GetUserData(User.Identity.Name);
 
-			return View(Tuple.Create(userFriends, pendingFriendsIncoming));
+			return View(Tuple.Create(userFriends, pendingFriendsIncomingList));
 		}
 
 		public ViewResult Error()
@@ -230,12 +235,11 @@ namespace Chatto.Controllers
 		{
 			var allUsers = UserService.GetAllUsers();
 			var userFriends = GetUserFriends();
-			var pendingFriends = GetUserPendingFriends();
 
-			var pendingFriendsIncoming = pendingFriends.Item1;
-			var pendingFriendsOutgoing = pendingFriends.Item2;
+			var pendingIncomingFriends = GetUserPendingFriends();
+			var pendingOutgoingFriends = GetUserPendingFriends(false);
 
-			return View(Tuple.Create(userFriends, pendingFriendsIncoming, pendingFriendsOutgoing, allUsers));
+			return View(Tuple.Create(userFriends, pendingIncomingFriends, pendingOutgoingFriends, allUsers));
 		}
 
 		[Authorize]
@@ -342,9 +346,16 @@ namespace Chatto.Controllers
 
 		#region non-action methods
 
-		private UserDTO GetUserData(string userName)
+		private UserDTO GetUserData(string userName, bool isId = false)
 		{
-			return UserService.GetUserData(userName);
+			if (!isId)
+			{
+				return UserService.GetUserData(userName);
+			}
+			else
+			{
+				return UserService.GetUserData(userName, true);
+			}
 		}
 
 		private List<UserDTO> GetUserFriends()
@@ -362,26 +373,16 @@ namespace Chatto.Controllers
 			return friendsDTOs;
 		}
 
-		private (List<string>, List<string>) GetUserPendingFriends()
+		private List<string> GetUserPendingFriends(bool isIncoming = true)
 		{
-			var user = GetUserData(User.Identity.Name);
-			var pendingFriendsReceivedList = StringToList(user.PendingFriendsReceived);
-			var pendingFriendsSentList = StringToList(user.PendingFriendsSent);
-
-			var pendingFriendsIncomingList = new List<string>();
-			var pendingFriendsOutgoingList = new List<string>();
-
-			foreach (var friend in pendingFriendsReceivedList)
+			if (isIncoming)
 			{
-				pendingFriendsIncomingList.Add(friend.UserName);
+				return UserService.GetPendingFriends(User.Identity.Name);
 			}
-
-			foreach (var friend in pendingFriendsSentList)
+			else
 			{
-				pendingFriendsOutgoingList.Add(friend.UserName);
+				return UserService.GetPendingFriends(User.Identity.Name, false);
 			}
-
-			return (pendingFriendsIncomingList, pendingFriendsOutgoingList);
 		}
 
 		private List<UserDTO> StringToList(string friendsList)

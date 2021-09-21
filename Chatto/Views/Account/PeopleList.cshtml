@@ -20,11 +20,11 @@
 				{
 					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
 				}
-				else if (Model.Item2.Contains(user.UserName))
+				else if (Model.Item2.Contains(user.Id))
 				{
 					<td>Confirm friendship on home screen!</td>
 				}
-				else if (Model.Item3.Contains(user.UserName))
+				else if (Model.Item3.Contains(user.Id))
 				{
 					<td>Waiting for approval</td>
 				}
