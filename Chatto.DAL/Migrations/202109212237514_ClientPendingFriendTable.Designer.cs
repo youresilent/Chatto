@@ -7,13 +7,13 @@ namespace Chatto.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class PendingFriendsString : IMigrationMetadata
+    public sealed partial class ClientPendingFriendTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(PendingFriendsString));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ClientPendingFriendTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "202109141901234_PendingFriendsString"; }
+            get { return "202109212237514_ClientPendingFriendTable"; }
         }
         
         string IMigrationMetadata.Source
