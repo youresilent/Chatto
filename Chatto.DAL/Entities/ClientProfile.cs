@@ -15,11 +15,12 @@ namespace Chatto.DAL.Entities
 
 		public virtual ApplicationUser ApplicationUser { get; set; }
 
-		public virtual ICollection<ClientPendingFriend> ClientPendingFriends { get; set; }
+		public virtual ICollection<ClientPendingFriend> ClientSenderPendingFriends { get; set; }
+		public virtual ICollection<ClientPendingFriend> ClientReceiverPendingFriends { get; set; }
 
-		public ClientProfile()
-		{
-			ClientPendingFriends = new HashSet<ClientPendingFriend>();
-		}
+		//public ClientProfile()
+		//{
+		//	ClientPendingFriends = new HashSet<ClientPendingFriend>();
+		//}
 	}
 }

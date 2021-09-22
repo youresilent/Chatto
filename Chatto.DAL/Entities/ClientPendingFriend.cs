@@ -7,9 +7,9 @@ namespace Chatto.DAL.Entities
 		public int Id { get; set; }
 
 		public string Id_Receiver { get; set; }
+		public virtual ClientProfile ReceiverClientProfile { get; set; }
 
 		public string Id_Sender { get; set; }
-
-		public virtual ClientProfile ClientProfile { get; set; }
+		public virtual ClientProfile SenderClientProfile { get; set; }
 	}
 }
