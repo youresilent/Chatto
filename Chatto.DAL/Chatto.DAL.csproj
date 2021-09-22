@@ -76,6 +76,10 @@
     <Compile Include="Migrations\202109020903591_MessageIdToInt.designer.cs">
       <DependentUpon>202109020903591_MessageIdToInt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109221956004_PendingFriendTable.cs" />
+    <Compile Include="Migrations\202109221956004_PendingFriendTable.designer.cs">
+      <DependentUpon>202109221956004_PendingFriendTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientManager.cs" />
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109020903591_MessageIdToInt.resx">
       <DependentUpon>202109020903591_MessageIdToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109221956004_PendingFriendTable.resx">
+      <DependentUpon>202109221956004_PendingFriendTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
