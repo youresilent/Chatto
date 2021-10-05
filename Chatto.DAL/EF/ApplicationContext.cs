@@ -53,15 +53,6 @@ namespace Chatto.DAL.EF
 				.Property(p => p.Id)
 				.HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
 
-			//modelBuilder.Entity<ClientProfile>()
-			//	.HasMany(m => m.ClientPendingFriends)
-			//	.WithRequired(w => w.ClientProfile)
-			//	.HasForeignKey(k => k.Id_Receiver)
-			//	.WillCascadeOnDelete(false);
-
-			//modelBuilder.Entity<ClientPendingFriend>()
-			//	.HasMany(m => m.ClientProfile)
-
 			base.OnModelCreating(modelBuilder);
 		}
 	}

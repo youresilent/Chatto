@@ -18,10 +18,5 @@ namespace Chatto.DAL.Entities
 		public virtual ICollection<ClientPendingFriend> ClientReceiverPendingFriends { get; set; }
 
 		public virtual ICollection<ClientFriend> ClientFriends { get; set; }
-
-		//public ClientProfile()
-		//{
-		//	ClientPendingFriends = new HashSet<ClientPendingFriend>();
-		//}
 	}
 }
