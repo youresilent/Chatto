@@ -15,17 +15,17 @@ namespace Chatto.DAL.Repositories
 			DataBase = db;
 		}
 
-		public void Create(ClientProfile item)
-		{
-			DataBase.ClientProfiles.Add(item);
-			DataBase.SaveChanges();
-		}
+		//public void Create(ClientProfile item)
+		//{
+		//	DataBase.ClientProfiles.Add(item);
+		//	DataBase.SaveChanges();
+		//}
 
-		public void Remove(ClientProfile item)
-		{
-			DataBase.ClientProfiles.Remove(item);
-			DataBase.SaveChanges();
-		}
+		//public void Remove(ClientProfile item)
+		//{
+		//	DataBase.ClientProfiles.Remove(item);
+		//	DataBase.SaveChanges();
+		//}
 
 		public void RemovePendingFriend(ClientPendingFriend item)
 		{

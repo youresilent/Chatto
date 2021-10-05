@@ -18,6 +18,7 @@ namespace Chatto.DAL.Repositories
 		private readonly ApplicationRoleManager roleManager;
 		private readonly IClientManager clientManager;
 		private readonly IMessageManager messageManager;
+		private readonly IDBManager dbManager;
 
 		public IdentityUnitOfWork()
 		{
@@ -28,6 +29,7 @@ namespace Chatto.DAL.Repositories
 
 			clientManager = new ClientManager(DataBase);
 			messageManager = new MessageManager(DataBase);
+			dbManager = new DBManager(DataBase);
 		}
 
 		public ApplicationUserManager UserManager { get { return userManager; } }
@@ -37,6 +39,8 @@ namespace Chatto.DAL.Repositories
 		public IClientManager ClientManager { get { return clientManager; } }
 
 		public IMessageManager MessageManager { get { return messageManager; } }
+
+		public IDBManager DBManager { get { return dbManager; } }
 
 		public void Dispose()
 		{
@@ -55,6 +59,7 @@ namespace Chatto.DAL.Repositories
 
 					clientManager.Dispose();
 					messageManager.Dispose();
+					dbManager.Dispose();
 				}
 
 				disposed = true;

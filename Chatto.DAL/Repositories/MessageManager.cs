@@ -16,11 +16,11 @@ namespace Chatto.DAL.Repositories
 			DataBase = db;
 		}
 
-		public void Create(ClientMessage message)
-		{
-			DataBase.ClientMessages.Add(message);
-			DataBase.SaveChanges();
-		}
+		//public void Create(ClientMessage message)
+		//{
+		//	DataBase.ClientMessages.Add(message);
+		//	DataBase.SaveChanges();
+		//}
 
 		public List<ClientMessage> GetMessages(string currentUserName, string friendUserName)
 		{
@@ -42,13 +42,13 @@ namespace Chatto.DAL.Repositories
 			return userMessagesList;
 		}
 
-		public void Remove(ClientMessage message)
-		{
-			var dbEntry = DataBase.ClientMessages.First(m => m.Id == message.Id);
+		//public void Remove(ClientMessage message)
+		//{
+		//	var dbEntry = DataBase.ClientMessages.First(m => m.Id == message.Id);
 
-			DataBase.Entry(dbEntry).State = EntityState.Deleted;
-			DataBase.SaveChanges();
-		}
+		//	DataBase.Entry(dbEntry).State = EntityState.Deleted;
+		//	DataBase.SaveChanges();
+		//}
 
 		public List<ClientMessage> GetMessagesForRemoval(string userName)
 		{
