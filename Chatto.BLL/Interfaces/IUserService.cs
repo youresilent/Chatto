@@ -28,12 +28,12 @@ namespace Chatto.BLL.Interfaces
 
 		OperationDetails RemoveFriend(string currentUser, string friendUserName);
 
+		List<string> GetFriends(string userName);
+
 		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
 
 		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
 
 		OperationDetails DeleteAccount(string userName);
-
-		List<string> StringToList(string friendsList);
 	}
 }

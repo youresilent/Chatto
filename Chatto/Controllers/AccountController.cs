@@ -360,14 +360,12 @@ namespace Chatto.Controllers
 
 		private List<UserDTO> GetUserFriends()
 		{
-			var user = GetUserData(User.Identity.Name);
-			var friends = StringToList(user.Friends);
-
+			var friends = UserService.GetFriends(User.Identity.Name);
 			var friendsDTOs = new List<UserDTO>();
 
-			foreach (var friend in friends)
+			foreach (var friendId in friends)
 			{
-				friendsDTOs.Add(GetUserData(friend.UserName));
+				friendsDTOs.Add(GetUserData(friendId, true));
 			}
 
 			return friendsDTOs;
@@ -383,19 +381,6 @@ namespace Chatto.Controllers
 			{
 				return UserService.GetPendingFriends(User.Identity.Name, false);
 			}
-		}
-
-		private List<UserDTO> StringToList(string friendsList)
-		{
-			var stringList = UserService.StringToList(friendsList);
-			var users = new List<UserDTO>();
-
-			foreach (var user in stringList)
-			{
-				users.Add(GetUserData(user));
-			}
-
-			return users;
 		}
 
 		#endregion

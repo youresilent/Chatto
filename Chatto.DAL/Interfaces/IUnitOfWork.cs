@@ -14,6 +14,8 @@ namespace Chatto.DAL.Interfaces
 
 		IMessageManager MessageManager { get; }
 
+		IDBManager DBManager { get; }
+
 		Task SaveAsync();
 	}
 }

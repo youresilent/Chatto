@@ -21,7 +21,7 @@ namespace Chatto.BLL.Services
 		{
 			try
 			{
-				DataBase.MessageManager.Create(GetClientMessage(messageDTO));
+				DataBase.DBManager.Create(GetClientMessage(messageDTO));
 				await DataBase.SaveAsync();
 			}
 			catch
@@ -36,7 +36,7 @@ namespace Chatto.BLL.Services
 		{
 			try
 			{
-				DataBase.MessageManager.Remove(GetClientMessage(messageDTO));
+				DataBase.DBManager.Remove(GetClientMessage(messageDTO));
 				await DataBase.SaveAsync();
 			}
 			catch
@@ -64,7 +64,7 @@ namespace Chatto.BLL.Services
 		{
 			foreach (var message in DataBase.MessageManager.GetMessagesForRemoval(userName))
 			{
-				DataBase.MessageManager.Remove(message);
+				DataBase.DBManager.Remove(message);
 			}
 		}
 

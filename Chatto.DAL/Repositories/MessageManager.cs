@@ -2,7 +2,6 @@
 using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace Chatto.DAL.Repositories
@@ -14,12 +13,6 @@ namespace Chatto.DAL.Repositories
 		public MessageManager(ApplicationContext db)
 		{
 			DataBase = db;
-		}
-
-		public void Create(ClientMessage message)
-		{
-			DataBase.ClientMessages.Add(message);
-			DataBase.SaveChanges();
 		}
 
 		public List<ClientMessage> GetMessages(string currentUserName, string friendUserName)
@@ -40,14 +33,6 @@ namespace Chatto.DAL.Repositories
 			var userMessagesList = userMessagesEnumerable.ToList();
 
 			return userMessagesList;
-		}
-
-		public void Remove(ClientMessage message)
-		{
-			var dbEntry = DataBase.ClientMessages.First(m => m.Id == message.Id);
-
-			DataBase.Entry(dbEntry).State = EntityState.Deleted;
-			DataBase.SaveChanges();
 		}
 
 		public List<ClientMessage> GetMessagesForRemoval(string userName)

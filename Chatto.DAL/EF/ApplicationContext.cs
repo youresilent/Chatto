@@ -11,6 +11,8 @@ namespace Chatto.DAL.EF
 		public DbSet<ClientProfile> ClientProfiles { get; set; }
 		public DbSet<ClientMessage> ClientMessages { get; set; }
 
+		public DbSet<ClientFriend> ClientFriends { get; set; }
+
 		public DbSet<ClientPendingFriend> ClientPendingFriends { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,6 +27,12 @@ namespace Chatto.DAL.EF
 			modelBuilder.Entity<ClientMessage>()
 				.Property(p => p.Id)
 				.HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+
+			modelBuilder.Entity<ClientProfile>()
+				.HasMany(m => m.ClientFriends)
+				.WithRequired(r => r.Friend_Profile1)
+				.HasForeignKey(fk => fk.Friend_Id1)
+				.WillCascadeOnDelete(false);
 
 			modelBuilder.Entity<ClientPendingFriend>()
 				.HasKey(pf => new { pf.Id_Receiver, pf.Id_Sender });
@@ -44,15 +52,6 @@ namespace Chatto.DAL.EF
 			modelBuilder.Entity<ClientPendingFriend>()
 				.Property(p => p.Id)
 				.HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-
-			//modelBuilder.Entity<ClientProfile>()
-			//	.HasMany(m => m.ClientPendingFriends)
-			//	.WithRequired(w => w.ClientProfile)
-			//	.HasForeignKey(k => k.Id_Receiver)
-			//	.WillCascadeOnDelete(false);
-
-			//modelBuilder.Entity<ClientPendingFriend>()
-			//	.HasMany(m => m.ClientProfile)
 
 			base.OnModelCreating(modelBuilder);
 		}
