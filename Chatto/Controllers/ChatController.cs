@@ -72,14 +72,15 @@ namespace Chatto.Controllers
 
 		private List<UserDTO> GetUserFriends()
 		{
-			var user = UserService.GetUserData(User.Identity.Name);
-			var friends = StringToList(user.Friends);
+			var friends = UserService.GetFriends(User.Identity.Name);
+			//var user = UserService.GetUserData(User.Identity.Name);
+			//var friends = StringToList(user.Friends);
 
 			var friendsDTOs = new List<UserDTO>();
 
 			foreach (var friend in friends)
 			{
-				friendsDTOs.Add(UserService.GetUserData(friend.UserName));
+				friendsDTOs.Add(UserService.GetUserData(friend, true));
 			}
 
 			return friendsDTOs;
