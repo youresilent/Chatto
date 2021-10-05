@@ -25,8 +25,6 @@ namespace Chatto.BLL.DTO
 		[Display(Name = "Age")]
 		public int Age { get; set; }
 
-		//public string Friends { get; set; }
-
 		public string Role { get; set; }
 	}
 }

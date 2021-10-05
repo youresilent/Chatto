@@ -35,7 +35,5 @@ namespace Chatto.BLL.Interfaces
 		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
 
 		OperationDetails DeleteAccount(string userName);
-
-		List<string> StringToList(string friendsList);
 	}
 }
