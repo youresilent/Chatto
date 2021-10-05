@@ -73,9 +73,6 @@ namespace Chatto.Controllers
 		private List<UserDTO> GetUserFriends()
 		{
 			var friends = UserService.GetFriends(User.Identity.Name);
-			//var user = UserService.GetUserData(User.Identity.Name);
-			//var friends = StringToList(user.Friends);
-
 			var friendsDTOs = new List<UserDTO>();
 
 			foreach (var friend in friends)
@@ -84,19 +81,6 @@ namespace Chatto.Controllers
 			}
 
 			return friendsDTOs;
-		}
-
-		private List<UserDTO> StringToList(string friendsList)
-		{
-			var stringList = UserService.StringToList(friendsList);
-			var users = new List<UserDTO>();
-
-			foreach (var user in stringList)
-			{
-				users.Add(UserService.GetUserData(user));
-			}
-
-			return users;
 		}
 
 		private MessageDTO GetMessageDTO(string sender, string recipient, string message, DateTime sendDateTime)
