@@ -8,6 +8,6 @@ namespace Chatto.DAL.Interfaces
 	{
 		void RemovePendingFriend(ClientPendingFriend item);
 
-		List<string> GetOutgoingPendingFriends(string id);
+		List<Guid> GetOutgoingPendingFriends(Guid id);
 	}
 }

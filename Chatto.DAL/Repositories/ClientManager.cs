@@ -1,6 +1,7 @@
 ﻿using Chatto.DAL.EF;
 using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,7 +22,7 @@ namespace Chatto.DAL.Repositories
 			DataBase.SaveChanges();
 		}
 
-		public List<string> GetOutgoingPendingFriends(string id)
+		public List<Guid> GetOutgoingPendingFriends(Guid id)
 		{
 			var outgoingFriendsEnumerable = DataBase.ClientPendingFriends.ToList()
 				.Where(w => w.Id_Sender == id)
