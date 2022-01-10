@@ -60,6 +60,9 @@
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
@@ -306,6 +309,10 @@
     <ProjectReference Include="..\Chatto.BLL\Chatto.BLL.csproj">
       <Project>{8073dfd2-f987-412e-9706-1e89fc735cec}</Project>
       <Name>Chatto.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatto.DAL\Chatto.DAL.csproj">
+      <Project>{31976963-EE78-47F4-B6F8-7D351B9C300D}</Project>
+      <Name>Chatto.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
