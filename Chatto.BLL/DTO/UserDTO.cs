@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chatto.BLL.DTO
 {
 	public class UserDTO
 	{
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
