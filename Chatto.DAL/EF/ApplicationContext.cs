@@ -1,10 +1,12 @@
 ﻿using Chatto.DAL.Entities;
+using Chatto.DAL.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
 
 namespace Chatto.DAL.EF
 {
-	public class ApplicationContext : IdentityDbContext<ApplicationUser>
+	public class ApplicationContext : IdentityDbContext<ApplicationUser, CustomRole, Guid, CustomUserLogin, CustomUserRole, CustomUserClaim>
 	{
 		public ApplicationContext() : base("name=IdentityDb") { }
 
