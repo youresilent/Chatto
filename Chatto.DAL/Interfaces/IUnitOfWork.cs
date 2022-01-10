@@ -8,9 +8,9 @@ namespace Chatto.DAL.Interfaces
 	{
 		ApplicationUserManager UserManager { get; }
 
-		ApplicationRoleManager RoleManager { get; }
+        ApplicationRoleManager RoleManager { get; }
 
-		IClientManager ClientManager { get; }
+        IClientManager ClientManager { get; }
 
 		IMessageManager MessageManager { get; }
 

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Chatto.DAL.Entities
 {
 	public class ClientProfile
 	{
-		public string Id { get; set; }
+		public Guid Id { get; set; }
 
 		public string RealName { get; set; }
 		public string Adress { get; set; }

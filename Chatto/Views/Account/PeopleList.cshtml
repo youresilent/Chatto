@@ -1,4 +1,4 @@
-﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<string>, List<string>, List<Chatto.BLL.DTO.UserDTO>>
+﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<Guid>, List<Guid>, List<Chatto.BLL.DTO.UserDTO>>
 @{
 	ViewBag.Title = "Users list";
 }
@@ -10,29 +10,33 @@
 	{
 		if (user.UserName != User.Identity.Name)
 		{
-			<tr>
-				<td>
-					@user.UserName (@user.RealName)
-					<div class="text-black-50">@user.Email</div>
-				</td>
+    <tr>
+        <td>
+            @user.UserName (@user.RealName)
+            <div class="text-black-50">@user.Email</div>
+        </td>
 
-				@if (Model.Item1.Select(m => m.UserName == user.UserName).FirstOrDefault())
-				{
-					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
-				}
-				else if (Model.Item2.Contains(user.Id))
-				{
-					<td>Confirm friendship on home screen!</td>
-				}
-				else if (Model.Item3.Contains(user.Id))
-				{
-					<td>Waiting for approval</td>
-				}
-				else
-				{ 
-					<td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddPendingFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
-				}
-			</tr>
+        @{
+            Chatto.BLL.DTO.UserDTO pendingFriend = Model.Item1.Find(s => s.UserName == user.UserName);
+        }
+
+        @if (pendingFriend != null && Model.Item1.Contains(pendingFriend))
+        {
+            <td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
+        }
+        else if (Model.Item2.Contains(user.Id))
+        {
+            <td>Confirm friendship on home screen!</td>
+        }
+        else if (Model.Item3.Contains(user.Id))
+        {
+            <td>Waiting for approval</td>
+        }
+        else
+        {
+            <td class="align-middle" style="text-align: right">@Html.ActionLink("Add friend", "AddPendingFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-warning" })</td>
+        }
+    </tr>
 		}
 	}
 </table>

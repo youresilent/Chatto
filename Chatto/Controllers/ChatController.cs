@@ -77,7 +77,7 @@ namespace Chatto.Controllers
 
 			foreach (var friend in friends)
 			{
-				friendsDTOs.Add(UserService.GetUserData(friend, true));
+				friendsDTOs.Add(UserService.GetUserData(Convert.ToString(friend), true));
 			}
 
 			return friendsDTOs;

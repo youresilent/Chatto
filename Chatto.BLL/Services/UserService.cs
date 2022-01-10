@@ -2,8 +2,10 @@
 using Chatto.BLL.Infrastructure;
 using Chatto.BLL.Interfaces;
 using Chatto.DAL.Entities;
+using Chatto.DAL.Identity;
 using Chatto.DAL.Interfaces;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -41,7 +43,7 @@ namespace Chatto.BLL.Services
 
 			if (user == null)
 			{
-				user = new ApplicationUser { Email = userDTO.Email, UserName = userDTO.UserName };
+				user = new ApplicationUser { Id = Guid.NewGuid(), Email = userDTO.Email, UserName = userDTO.UserName };
 
 				var result = await DataBase.UserManager.CreateAsync(user, userDTO.Password);
 
@@ -76,9 +78,9 @@ namespace Chatto.BLL.Services
 		{
 			var user = DataBase.UserManager.FindByName(userName);
 
-			foreach (var friend in user.ClientProfile.ClientFriends)
+			foreach (var friend in user.ClientProfile.ClientFriends.ToList())
 			{
-				RemoveFriend(GetUserData(friend.Friend_Id2, true).UserName, userName);
+				RemoveFriend(GetUserData(Convert.ToString(friend.Friend_Id2), true).UserName, userName);
 			}
 
 			DataBase.DBManager.Remove(user.ClientProfile);
@@ -137,11 +139,11 @@ namespace Chatto.BLL.Services
 			return new OperationDetails(true, StatusStringsResource.RemovePendingFriend_OK, "");
 		}
 
-		public List<string> GetPendingFriends(string userName, bool isIncoming = true)
+		public List<Guid> GetPendingFriends(string userName, bool isIncoming = true)
 		{
 			var user = DataBase.UserManager.FindByName(userName);
 
-			var pendingFriendsList = new List<string>();
+			var pendingFriendsList = new List<Guid>();
 
 			if (isIncoming)
 			{
@@ -216,11 +218,11 @@ namespace Chatto.BLL.Services
 			return new OperationDetails(true, StatusStringsResource.RemoveFriend_OK, "");
 		}
 
-		public List<string> GetFriends(string userName)
+		public List<Guid> GetFriends(string userName)
 		{
 			var user = DataBase.UserManager.FindByName(userName);
 
-			var friendsList = new List<string>();
+			var friendsList = new List<Guid>();
 
 			foreach (var item in user.ClientProfile.ClientFriends.ToList())
 			{
@@ -236,7 +238,7 @@ namespace Chatto.BLL.Services
 
 			if (isId)
 			{
-				tempUser = DataBase.UserManager.FindById(userName);
+				tempUser = DataBase.UserManager.FindById(Guid.Parse(userName));
 			}
 			else
 			{
@@ -292,7 +294,7 @@ namespace Chatto.BLL.Services
 			}
 		}
 
-		public OperationDetails ChangePassword(string oldPass, string newPass, string id)
+		public OperationDetails ChangePassword(string oldPass, string newPass, Guid id)
 		{
 			var user = DataBase.UserManager.FindById(id);
 
@@ -323,7 +325,7 @@ namespace Chatto.BLL.Services
 
 				if (role == null)
 				{
-					role = new ApplicationRole { Name = roleName };
+					role = new CustomRole { Name = roleName };
 					DataBase.RoleManager.Create(role);
 				}
 
@@ -338,13 +340,13 @@ namespace Chatto.BLL.Services
 
 			if (userRole == null)
 			{
-				userRole = new ApplicationRole { Name = "user" };
+				userRole = new CustomRole { Id = Guid.NewGuid(), Name = "user" };
 				DataBase.RoleManager.Create(userRole);
 			}
 
 			if (adminRole == null)
 			{
-				adminRole = new ApplicationRole { Name = "admin" };
+				adminRole = new CustomRole { Id = Guid.NewGuid(), Name = "admin" };
 				DataBase.RoleManager.Create(adminRole);
 			}
 		}
