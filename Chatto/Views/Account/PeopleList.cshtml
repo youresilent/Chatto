@@ -1,7 +1,14 @@
-﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<string>, List<string>, List<Chatto.BLL.DTO.UserDTO>>
+﻿@model Tuple<List<Chatto.BLL.DTO.UserDTO>, List<Guid>, List<Guid>, List<Chatto.BLL.DTO.UserDTO>>
 @{
 	ViewBag.Title = "Users list";
 }
+
+@*
+item1 = userFriends
+item2 = pendingIncomingFriends
+item3 = penidingOutgoindFriends
+item4 = allUsers
+*@
 
 <h2 class="display-2">Registered users</h2>
 
@@ -16,7 +23,13 @@
 					<div class="text-black-50">@user.Email</div>
 				</td>
 
-				@if (Model.Item1.Select(m => m.UserName == user.UserName).FirstOrDefault())
+				@{ 
+                    //fix all registered users not showing as pending (??????)
+                    /*Model.Item1.Select(m => m.UserName == user.UserName).FirstOrDefault()*/
+                    Chatto.BLL.DTO.UserDTO us = Model.Item1.Find(s => s.UserName == user.UserName);
+				} 
+
+				@if (us != null && Model.Item1.Contains(us))
 				{
 					<td class="align-middle" style="text-align: right">@Html.ActionLink("Already friended", "RemoveFriend", "Account", new { friendUserName = user.UserName }, new { @class = "btn btn-sm btn-outline-success disabled" })</td>
 				}
