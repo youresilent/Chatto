@@ -143,7 +143,7 @@ namespace Chatto.Controllers
 
 			foreach (var item in pendingFriends)
 			{
-				pendingFriendsIncomingList.Add(GetUserData(item, true).UserName);
+				pendingFriendsIncomingList.Add(GetUserData(Convert.ToString(item), true).UserName);
 			}
 
 			ViewBag.CurrentUser = GetUserData(User.Identity.Name);
@@ -346,15 +346,15 @@ namespace Chatto.Controllers
 
 		#region non-action methods
 
-		private UserDTO GetUserData(string userName, bool isId = false)
+		private UserDTO GetUserData(string userNameOrId, bool isId = false)
 		{
 			if (!isId)
 			{
-				return UserService.GetUserData(userName);
+				return UserService.GetUserData(userNameOrId);
 			}
 			else
 			{
-				return UserService.GetUserData(userName, true);
+				return UserService.GetUserData(userNameOrId, true);
 			}
 		}
 
@@ -365,13 +365,13 @@ namespace Chatto.Controllers
 
 			foreach (var friendId in friends)
 			{
-				friendsDTOs.Add(GetUserData(friendId, true));
+				friendsDTOs.Add(GetUserData(Convert.ToString(friendId), true));
 			}
 
 			return friendsDTOs;
 		}
 
-		private List<string> GetUserPendingFriends(bool isIncoming = true)
+		private List<Guid> GetUserPendingFriends(bool isIncoming = true)
 		{
 			if (isIncoming)
 			{
