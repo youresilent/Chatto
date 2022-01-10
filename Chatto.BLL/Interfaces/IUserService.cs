@@ -22,17 +22,17 @@ namespace Chatto.BLL.Interfaces
 
 		OperationDetails RemovePendingFriend(string currentUser, string friendUserName);
 
-		List<Guid> GetPendingFriends(string userName, bool isIncoming = true);
+		List<string> GetPendingFriends(string userName, bool isIncoming = true);
 
 		OperationDetails AddFriend(string currentUser, string friendUserName);
 
 		OperationDetails RemoveFriend(string currentUser, string friendUserName);
 
-		List<Guid> GetFriends(string userName);
+		List<string> GetFriends(string userName);
 
 		OperationDetails ChangeSecondaryInfo(UserDTO newUserInfo);
 
-		OperationDetails ChangePassword(string oldPass, string newPass, Guid id);
+		OperationDetails ChangePassword(string oldPass, string newPass, string userName);
 
 		OperationDetails DeleteAccount(string userName);
 	}
