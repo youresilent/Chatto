@@ -1,71 +1,103 @@
 ﻿using Chatto.DAL.EF;
-using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
-using System;
-using System.Data.Entity;
-using System.Linq;
+using System.Data.Entity.Validation;
 
 namespace Chatto.DAL.Repositories
 {
-	public class DBManager : IDBManager
-	{
-		public ApplicationContext DataBase { get; set; }
+    public class DBManager : IDBManager
+    {
+        public ApplicationContext DataBase { get; set; }
 
-		public DBManager(ApplicationContext db)
-		{
-			DataBase = db;
-		}
+        public DBManager(ApplicationContext db)
+        {
+            DataBase = db;
+        }
 
-		public void Create<T>(T item)
-		{
-			Type type = typeof(T);
+        public void Create<T>(T item) where T : class
+        {
+            try
+            {
+                DataBase.Set<T>().Add(item as T);
+                DataBase.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var ent in ex.EntityValidationErrors)
+                {
+                    var entry = ent.Entry;
 
-			if (type == typeof(ClientProfile))
-			{
-				DataBase.ClientProfiles.Add(item as ClientProfile);
-				DataBase.SaveChanges();
-			}
+                    switch (entry.State)
+                    {
+                        case System.Data.Entity.EntityState.Added:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Detached;
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Modified:
+                            {
+                                entry.CurrentValues.SetValues(entry.OriginalValues);
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
 
-			else if (type == typeof(ClientMessage))
-			{
-				DataBase.ClientMessages.Add(item as ClientMessage);
-				DataBase.SaveChanges();
-			}
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Deleted:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
+                                break;
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
-		}
+        public void Dispose()
+        {
+            DataBase.Dispose();
+        }
 
-		public void Dispose()
-		{
-			DataBase.Dispose();
-		}
+        public void Remove<T>(T item) where T : class
+        {
+            try
+            {
+                DataBase.Set<T>().Remove(item);
+                DataBase.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var ent in ex.EntityValidationErrors)
+                {
+                    var entry = ent.Entry;
 
-		public void Remove<T>(T item)
-		{
-			Type type = typeof(T);
+                    switch (entry.State)
+                    {
+                        case System.Data.Entity.EntityState.Added:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Detached;
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Modified:
+                            {
+                                entry.CurrentValues.SetValues(entry.OriginalValues);
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
 
-			if (type == typeof(ClientProfile))
-			{
-				DataBase.ClientProfiles.Remove(item as ClientProfile);
-				DataBase.SaveChanges();
-			}
-
-			else if (type == typeof(ClientMessage))
-			{
-				var message = item as ClientMessage;
-				var dbEntry = DataBase.ClientMessages.First(m => m.Id == message.Id);
-
-				DataBase.Entry(dbEntry).State = EntityState.Deleted;
-				DataBase.SaveChanges();
-			}
-
-			else if (type == typeof(ClientFriend))
-			{
-				var record = item as ClientFriend;
-				var dbEntry = DataBase.ClientFriends.First(f => f.Friend_Id1 == record.Friend_Id1 && f.Friend_Id2 == record.Friend_Id2);
-
-				DataBase.Entry(dbEntry).State = EntityState.Deleted;
-				DataBase.SaveChanges();
-			}
-		}
-	}
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Deleted:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
+                                break;
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+    }
 }
