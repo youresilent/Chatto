@@ -6,57 +6,79 @@ using System.Linq;
 
 namespace Chatto.DAL.Repositories
 {
-	public class MessageManager : IMessageManager
-	{
-		public ApplicationContext DataBase { get; set; }
+    public class MessageManager : IMessageManager
+    {
 
-		public MessageManager(ApplicationContext db)
-		{
-			DataBase = db;
-		}
+        public ApplicationContext DataBase { get; set; }
 
-		public List<ClientMessage> GetMessages(string currentUserName, string friendUserName)
-		{
-			var userMessagesEnumerable = DataBase.ClientMessages.ToList()
-				.Where(m => (m.Sender == currentUserName && m.Recipient == friendUserName) ||
-					(m.Sender == friendUserName && m.Recipient == currentUserName))
-				.OrderBy(m => m.SendDateTime)
-				.Select(m => new ClientMessage
-				{
-					Id = m.Id,
-					Message = m.Message,
-					Sender = m.Sender,
-					Recipient = m.Recipient,
-					SendDateTime = m.SendDateTime
-				});
+        public MessageManager(ApplicationContext db)
+        {
+            DataBase = db;
+        }
 
-			var userMessagesList = userMessagesEnumerable.ToList();
+        public List<ClientMessage> GetMessages(string currentUserName, string friendUserName)
+        {
+            List<ClientMessage> userMessagesList = null;
 
-			return userMessagesList;
-		}
+            try
+            {
+                var userMessagesEnumerable = DataBase.ClientMessages
+                .Where(m => (m.Sender == currentUserName && m.Recipient == friendUserName) ||
+                    (m.Sender == friendUserName && m.Recipient == currentUserName))
+                .ToList()
+                .OrderBy(m => m.SendDateTime)
+                .Select(m => new ClientMessage
+                {
+                    Id = m.Id,
+                    Message = m.Message,
+                    Sender = m.Sender,
+                    Recipient = m.Recipient,
+                    SendDateTime = m.SendDateTime
+                })
+                .ToList();
 
-		public List<ClientMessage> GetMessagesForRemoval(string userName)
-		{
-			var userMessagesEnumerable = DataBase.ClientMessages.ToList()
-				.Where(m => m.Sender == userName || m.Recipient == userName)
-				.OrderBy(m => m.SendDateTime)
-				.Select(m => new ClientMessage
-				{
-					Id = m.Id,
-					Message = m.Message,
-					Sender = m.Sender,
-					Recipient = m.Recipient,
-					SendDateTime = m.SendDateTime
-				});
+                userMessagesList = userMessagesEnumerable.ToList();
+            }
+            catch
+            {
+                throw;
+            }
 
-			var userMessagesList = userMessagesEnumerable.ToList();
+            return userMessagesList;
+        }
 
-			return userMessagesList;
-		}
+        public List<ClientMessage> GetMessagesForRemoval(string userName)
+        {
+            List<ClientMessage> userMessagesList = null;
 
-		public void Dispose()
-		{
-			DataBase.Dispose();
-		}
-	}
+            try
+            {
+                var userMessagesEnumerable = DataBase.ClientMessages
+                .Where(m => m.Sender == userName || m.Recipient == userName)
+                .OrderBy(m => m.SendDateTime)
+                .ToList()
+                .Select(m => new ClientMessage
+                {
+                    Id = m.Id,
+                    Message = m.Message,
+                    Sender = m.Sender,
+                    Recipient = m.Recipient,
+                    SendDateTime = m.SendDateTime
+                });
+
+                userMessagesList = userMessagesEnumerable.ToList();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return userMessagesList;
+        }
+
+        public void Dispose()
+        {
+            DataBase.Dispose();
+        }
+    }
 }
