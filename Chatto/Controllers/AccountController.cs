@@ -44,7 +44,7 @@ namespace Chatto.Controllers
 
 		public ViewResult Register()
 		{
-			return View();
+			return View(new RegisterModel());
 		}
 
 		[HttpPost]
@@ -92,7 +92,7 @@ namespace Chatto.Controllers
 
 		public ViewResult LogIn()
 		{
-			return View();
+			return View(new LogInModel());
 		}
 
 		[HttpPost]
@@ -170,7 +170,17 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult ProfileEdit()
 		{
-			return View(GetUserData(User.Identity.Name));
+			var userData = GetUserData(User.Identity.Name);
+			return View(new Chatto.BLL.DTO.UserDTO
+            {
+				Id = userData.Id,
+				UserName = userData.UserName,
+				Adress = userData.Adress,
+				RealName = userData.RealName,
+				Email = userData.Email,
+				Age = userData.Age,
+				Gender = userData.Gender
+            });
 		}
 
 		[HttpPost]
@@ -204,7 +214,7 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult ChangePassword()
 		{
-			return View();
+			return View(new ChangePasswordModel());
 		}
 
 		[Authorize]
