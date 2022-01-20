@@ -123,6 +123,9 @@
   <data name="AccountRemoval_OK" xml:space="preserve">
     <value>Account removed successfully!</value>
   </data>
+  <data name="AddFriend_AddFailure" xml:space="preserve">
+    <value>Can't add friend.</value>
+  </data>
   <data name="AddFriend_FailureOP1" xml:space="preserve">
     <value>Error occured while adding friend! (operation1)</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="AddFriend_OK" xml:space="preserve">
     <value>Added friend successfully!</value>
+  </data>
+  <data name="AddPendingFriend_AddFailure" xml:space="preserve">
+    <value>Can't add pending friend.</value>
   </data>
   <data name="AddPendingFriend_FailureOP1" xml:space="preserve">
     <value>Error occured while adding pending friend! (operation1)</value>
@@ -150,6 +156,9 @@
   <data name="ChangePassword_SameOldNewPasswordError" xml:space="preserve">
     <value>Old and new passwords are same!</value>
   </data>
+  <data name="ChangePassword_UpdateFailed" xml:space="preserve">
+    <value>Password change failed!</value>
+  </data>
   <data name="ChangeSecondaryInfo_Failure" xml:space="preserve">
     <value>Update failed!</value>
   </data>
@@ -162,11 +171,20 @@
   <data name="CreateMessage_OK" xml:space="preserve">
     <value>Message was saved successfully!</value>
   </data>
+  <data name="FriendNotFound" xml:space="preserve">
+    <value>Friend profile not found!</value>
+  </data>
+  <data name="Registration_CreatingUserFailure" xml:space="preserve">
+    <value>Registration failed as Identity failed to create user.</value>
+  </data>
   <data name="Registration_Failure" xml:space="preserve">
     <value>This User name already exists!</value>
   </data>
   <data name="Registration_OK" xml:space="preserve">
     <value>Successful registration!</value>
+  </data>
+  <data name="RemoveFriend_DBEntryNotFound" xml:space="preserve">
+    <value>Friend entry not found in database!</value>
   </data>
   <data name="RemoveFriend_FailureOP1" xml:space="preserve">
     <value>Error occured while removing friend! (operation1)</value>
@@ -177,19 +195,22 @@
   <data name="RemoveFriend_OK" xml:space="preserve">
     <value>Removed friend successfully!</value>
   </data>
+  <data name="RemoveFriend_RemoveFailure" xml:space="preserve">
+    <value>Friend removal opreation failed.</value>
+  </data>
   <data name="RemoveMessage_Failure" xml:space="preserve">
     <value>Message was not removed!</value>
   </data>
   <data name="RemoveMessage_OK" xml:space="preserve">
     <value>Message was removed!</value>
   </data>
-  <data name="RemovePendingFriend_FailureOP1" xml:space="preserve">
-    <value>Error occured while removing pending friend! (operation1)</value>
-  </data>
-  <data name="RemovePendingFriend_FailureOP2" xml:space="preserve">
-    <value>Error occured while removing pending friend! (operation2)</value>
+  <data name="RemovePendingFriend_Failure" xml:space="preserve">
+    <value>Error occured while removing pending friend!</value>
   </data>
   <data name="RemovePendingFriend_OK" xml:space="preserve">
     <value>Removed pending friend successfully!</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User profile not found!</value>
   </data>
 </root>

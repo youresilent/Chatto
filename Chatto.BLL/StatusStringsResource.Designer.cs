@@ -19,7 +19,7 @@ namespace Chatto.BLL {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class StatusStringsResource {
@@ -79,6 +79,15 @@ namespace Chatto.BLL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t add friend..
+        /// </summary>
+        internal static string AddFriend_AddFailure {
+            get {
+                return ResourceManager.GetString("AddFriend_AddFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while adding friend! (operation1).
         /// </summary>
         internal static string AddFriend_FailureOP1 {
@@ -102,6 +111,15 @@ namespace Chatto.BLL {
         internal static string AddFriend_OK {
             get {
                 return ResourceManager.GetString("AddFriend_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t add pending friend..
+        /// </summary>
+        internal static string AddPendingFriend_AddFailure {
+            get {
+                return ResourceManager.GetString("AddPendingFriend_AddFailure", resourceCulture);
             }
         }
         
@@ -160,6 +178,15 @@ namespace Chatto.BLL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password change failed!.
+        /// </summary>
+        internal static string ChangePassword_UpdateFailed {
+            get {
+                return ResourceManager.GetString("ChangePassword_UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update failed!.
         /// </summary>
         internal static string ChangeSecondaryInfo_Failure {
@@ -196,6 +223,24 @@ namespace Chatto.BLL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friend profile not found!.
+        /// </summary>
+        internal static string FriendNotFound {
+            get {
+                return ResourceManager.GetString("FriendNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration failed as Identity failed to create user..
+        /// </summary>
+        internal static string Registration_CreatingUserFailure {
+            get {
+                return ResourceManager.GetString("Registration_CreatingUserFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This User name already exists!.
         /// </summary>
         internal static string Registration_Failure {
@@ -210,6 +255,15 @@ namespace Chatto.BLL {
         internal static string Registration_OK {
             get {
                 return ResourceManager.GetString("Registration_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friend entry not found in database!.
+        /// </summary>
+        internal static string RemoveFriend_DBEntryNotFound {
+            get {
+                return ResourceManager.GetString("RemoveFriend_DBEntryNotFound", resourceCulture);
             }
         }
         
@@ -241,6 +295,15 @@ namespace Chatto.BLL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friend removal opreation failed..
+        /// </summary>
+        internal static string RemoveFriend_RemoveFailure {
+            get {
+                return ResourceManager.GetString("RemoveFriend_RemoveFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Message was not removed!.
         /// </summary>
         internal static string RemoveMessage_Failure {
@@ -259,20 +322,11 @@ namespace Chatto.BLL {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error occured while removing pending friend! (operation1).
+        ///   Looks up a localized string similar to Error occured while removing pending friend!.
         /// </summary>
-        internal static string RemovePendingFriend_FailureOP1 {
+        internal static string RemovePendingFriend_Failure {
             get {
-                return ResourceManager.GetString("RemovePendingFriend_FailureOP1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error occured while removing pending friend! (operation2).
-        /// </summary>
-        internal static string RemovePendingFriend_FailureOP2 {
-            get {
-                return ResourceManager.GetString("RemovePendingFriend_FailureOP2", resourceCulture);
+                return ResourceManager.GetString("RemovePendingFriend_Failure", resourceCulture);
             }
         }
         
@@ -282,6 +336,15 @@ namespace Chatto.BLL {
         internal static string RemovePendingFriend_OK {
             get {
                 return ResourceManager.GetString("RemovePendingFriend_OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User profile not found!.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }
