@@ -1,6 +1,9 @@
 ﻿using Chatto.DAL.EF;
+using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
+using System;
 using System.Data.Entity.Validation;
+using System.Linq;
 
 namespace Chatto.DAL.Repositories
 {
@@ -59,11 +62,27 @@ namespace Chatto.DAL.Repositories
             DataBase.Dispose();
         }
 
-        public void Remove<T>(T item) where T : class
+        public void Remove<T>(T item, int optionalEntryId = -1) where T : class
         {
             try
             {
-                DataBase.Set<T>().Remove(item);
+                if (optionalEntryId != -1)
+                {
+                    T dbEntry = DataBase.Set<T>().Find(optionalEntryId);
+                    DataBase.Set<T>().Remove(dbEntry);
+                }
+                else
+                {
+                    var entryState = DataBase.Entry<T>(item).State;
+
+                    if (entryState == System.Data.Entity.EntityState.Detached)
+                    {
+                        DataBase.Set<T>().Attach(item);
+                    }
+
+                    DataBase.Set<T>().Remove(item);
+                }
+                
                 DataBase.SaveChanges();
             }
             catch (DbEntityValidationException ex)
@@ -98,6 +117,16 @@ namespace Chatto.DAL.Repositories
             {
                 throw;
             }
+        }
+
+        public ClientFriend FindClientFriend(Guid friendId1, Guid friendId2)
+        {
+            ClientFriend dbRecord = DataBase.ClientFriends
+                .AsNoTracking()
+                .Where(w => w.Friend_Id1 == friendId1 && w.Friend_Id2 == friendId2)
+                .FirstOrDefault();
+
+            return dbRecord;
         }
     }
 }
