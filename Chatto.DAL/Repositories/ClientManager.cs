@@ -1,6 +1,7 @@
 ﻿using Chatto.DAL.EF;
 using Chatto.DAL.Entities;
 using Chatto.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,15 +18,31 @@ namespace Chatto.DAL.Repositories
 
 		public void RemovePendingFriend(ClientPendingFriend item)
 		{
-			DataBase.ClientPendingFriends.Remove(item);
-			DataBase.SaveChanges();
+			try
+            {
+				DataBase.ClientPendingFriends.Remove(item);
+				DataBase.SaveChanges();
+            }
+			catch
+            {
+				throw;
+            }
 		}
 
-		public List<string> GetOutgoingPendingFriends(string id)
+		public List<Guid> GetOutgoingPendingFriends(Guid id)
 		{
-			var outgoingFriendsEnumerable = DataBase.ClientPendingFriends.ToList()
-				.Where(w => w.Id_Sender == id)
-				.Select(s => s.Id_Receiver);
+			IEnumerable<Guid> outgoingFriendsEnumerable = null;
+
+			try
+            {
+				outgoingFriendsEnumerable = DataBase.ClientPendingFriends
+					.Where(w => w.Id_Sender == id)
+					.Select(s => s.Id_Receiver);
+            }
+			catch
+            {
+				throw;
+            }
 
 			return outgoingFriendsEnumerable.ToList();
 		}

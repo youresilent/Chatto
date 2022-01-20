@@ -44,7 +44,7 @@ namespace Chatto.Controllers
 
 		public ViewResult Register()
 		{
-			return View();
+			return View(new RegisterModel());
 		}
 
 		[HttpPost]
@@ -92,7 +92,7 @@ namespace Chatto.Controllers
 
 		public ViewResult LogIn()
 		{
-			return View();
+			return View(new LogInModel());
 		}
 
 		[HttpPost]
@@ -143,7 +143,7 @@ namespace Chatto.Controllers
 
 			foreach (var item in pendingFriends)
 			{
-				pendingFriendsIncomingList.Add(GetUserData(item, true).UserName);
+				pendingFriendsIncomingList.Add(GetUserData(Convert.ToString(item), true).UserName);
 			}
 
 			ViewBag.CurrentUser = GetUserData(User.Identity.Name);
@@ -170,7 +170,17 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult ProfileEdit()
 		{
-			return View(GetUserData(User.Identity.Name));
+			var userData = GetUserData(User.Identity.Name);
+			return View(new Chatto.BLL.DTO.UserDTO
+            {
+				Id = userData.Id,
+				UserName = userData.UserName,
+				Adress = userData.Adress,
+				RealName = userData.RealName,
+				Email = userData.Email,
+				Age = userData.Age,
+				Gender = userData.Gender
+            });
 		}
 
 		[HttpPost]
@@ -204,7 +214,7 @@ namespace Chatto.Controllers
 		[Authorize]
 		public ViewResult ChangePassword()
 		{
-			return View();
+			return View(new ChangePasswordModel());
 		}
 
 		[Authorize]
@@ -346,15 +356,15 @@ namespace Chatto.Controllers
 
 		#region non-action methods
 
-		private UserDTO GetUserData(string userName, bool isId = false)
+		private UserDTO GetUserData(string userNameOrId, bool isId = false)
 		{
 			if (!isId)
 			{
-				return UserService.GetUserData(userName);
+				return UserService.GetUserData(userNameOrId);
 			}
 			else
 			{
-				return UserService.GetUserData(userName, true);
+				return UserService.GetUserData(userNameOrId, true);
 			}
 		}
 
@@ -365,13 +375,13 @@ namespace Chatto.Controllers
 
 			foreach (var friendId in friends)
 			{
-				friendsDTOs.Add(GetUserData(friendId, true));
+				friendsDTOs.Add(GetUserData(Convert.ToString(friendId), true));
 			}
 
 			return friendsDTOs;
 		}
 
-		private List<string> GetUserPendingFriends(bool isIncoming = true)
+		private List<Guid> GetUserPendingFriends(bool isIncoming = true)
 		{
 			if (isIncoming)
 			{

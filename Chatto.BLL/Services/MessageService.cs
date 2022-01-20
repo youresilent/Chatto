@@ -52,20 +52,28 @@ namespace Chatto.BLL.Services
 			var clientMessagesList = DataBase.MessageManager.GetMessages(currentUserName, friendUserName);
 			var messageDTOList = new List<MessageDTO>();
 
-			foreach (var message in clientMessagesList)
-			{
-				messageDTOList.Add(GetMessageDTO(message));
-			}
+			if (clientMessagesList != null)
+            {
+				foreach (var message in clientMessagesList)
+				{
+					messageDTOList.Add(GetMessageDTO(message));
+				}
+            }
 
 			return messageDTOList;
 		}
 
 		public void RemoveMessages(string userName)
 		{
-			foreach (var message in DataBase.MessageManager.GetMessagesForRemoval(userName))
-			{
-				DataBase.DBManager.Remove(message);
-			}
+			var messagesForRemoval = DataBase.MessageManager.GetMessagesForRemoval(userName);
+
+			if (messagesForRemoval != null)
+            {
+				foreach (var message in messagesForRemoval)
+				{
+					DataBase.DBManager.Remove(message, message.Id);
+				}
+            }
 		}
 
 		public void Dispose()
@@ -75,28 +83,38 @@ namespace Chatto.BLL.Services
 
 		private ClientMessage GetClientMessage(MessageDTO messageDTO)
 		{
-			var clientMessage = new ClientMessage
-			{
-				Id = messageDTO.Id,
-				Sender = messageDTO.Sender,
-				Recipient = messageDTO.Recipient,
-				Message = messageDTO.Message,
-				SendDateTime = messageDTO.SendDateTime
-			};
+			ClientMessage clientMessage = new ClientMessage();
+
+			if (messageDTO != null)
+            {
+				clientMessage = new ClientMessage
+				{
+					Id = messageDTO.Id,
+					Sender = messageDTO.Sender,
+					Recipient = messageDTO.Recipient,
+					Message = messageDTO.Message,
+					SendDateTime = messageDTO.SendDateTime
+				};
+			}
 
 			return clientMessage;
 		}
 
 		private MessageDTO GetMessageDTO(ClientMessage clientMessage)
 		{
-			var messageDTO = new MessageDTO
-			{
-				Id = clientMessage.Id,
-				Sender = clientMessage.Sender,
-				Recipient = clientMessage.Recipient,
-				Message = clientMessage.Message,
-				SendDateTime = clientMessage.SendDateTime
-			};
+			MessageDTO messageDTO = new MessageDTO();
+
+			if (clientMessage != null)
+            {
+				messageDTO = new MessageDTO
+				{
+					Id = clientMessage.Id,
+					Sender = clientMessage.Sender,
+					Recipient = clientMessage.Recipient,
+					Message = clientMessage.Message,
+					SendDateTime = clientMessage.SendDateTime
+				};
+            }
 
 			return messageDTO;
 		}
