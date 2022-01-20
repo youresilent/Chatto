@@ -50,6 +50,8 @@ namespace Chatto.DAL.Repositories
                             }
                     }
                 }
+
+                throw;
             }
             catch
             {
@@ -112,6 +114,8 @@ namespace Chatto.DAL.Repositories
                             }
                     }
                 }
+
+                throw;
             }
             catch
             {
@@ -121,10 +125,19 @@ namespace Chatto.DAL.Repositories
 
         public ClientFriend FindClientFriend(Guid friendId1, Guid friendId2)
         {
-            ClientFriend dbRecord = DataBase.ClientFriends
-                .AsNoTracking()
-                .Where(w => w.Friend_Id1 == friendId1 && w.Friend_Id2 == friendId2)
-                .FirstOrDefault();
+            ClientFriend dbRecord;
+
+            try
+            {
+                dbRecord = DataBase.ClientFriends
+                    .AsNoTracking()
+                    .Where(w => w.Friend_Id1 == friendId1 && w.Friend_Id2 == friendId2)
+                    .FirstOrDefault();
+            }
+            catch
+            {
+                throw;
+            }
 
             return dbRecord;
         }
