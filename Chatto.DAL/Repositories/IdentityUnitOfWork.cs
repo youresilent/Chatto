@@ -2,6 +2,7 @@
 using Chatto.DAL.Identity;
 using Chatto.DAL.Interfaces;
 using System;
+using System.Data.Entity.Validation;
 using System.Threading.Tasks;
 
 namespace Chatto.DAL.Repositories
@@ -66,7 +67,42 @@ namespace Chatto.DAL.Repositories
 
         public async Task SaveAsync()
         {
-            await DataBase.SaveChangesAsync();
+            try
+            {
+                await DataBase.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var item in ex.EntityValidationErrors)
+                {
+                    var entry = item.Entry;
+
+                    switch (entry.State)
+                    {
+                        case System.Data.Entity.EntityState.Added:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Detached;
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Modified:
+                            {
+                                entry.CurrentValues.SetValues(entry.OriginalValues);
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
+
+                                break;
+                            }
+                        case System.Data.Entity.EntityState.Deleted:
+                            {
+                                entry.State = System.Data.Entity.EntityState.Unchanged;
+                                break;
+                            }
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
