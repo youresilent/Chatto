@@ -71,7 +71,7 @@ namespace Chatto.BLL.Services
             {
 				foreach (var message in messagesForRemoval)
 				{
-					DataBase.DBManager.Remove(message);
+					DataBase.DBManager.Remove(message, message.Id);
 				}
             }
 		}
