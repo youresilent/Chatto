@@ -54,6 +54,7 @@ namespace Chatto.DAL.Repositories
             try
             {
                 var userMessagesEnumerable = DataBase.ClientMessages
+                .AsNoTracking()
                 .Where(m => m.Sender == userName || m.Recipient == userName)
                 .OrderBy(m => m.SendDateTime)
                 .ToList()
